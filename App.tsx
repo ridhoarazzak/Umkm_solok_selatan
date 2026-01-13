@@ -15,7 +15,8 @@ const PRODUCTS: Product[] = [
     price: 85000,
     description: 'Kopi Arabika premium yang dipetik dari dataran tinggi Solok Selatan. Memiliki cita rasa fruity dengan aroma rempah yang khas.',
     image: 'https://picsum.photos/400/300?random=1',
-    owner: 'Koperasi Tani Maju'
+    owner: 'Koperasi Tani Maju',
+    contactNumber: '6288267051392'
   },
   {
     id: '2',
@@ -24,7 +25,8 @@ const PRODUCTS: Product[] = [
     price: 1250000,
     description: 'Songket tenunan tangan asli dengan benang emas berkualitas tinggi. Motif klasik yang melambangkan kemewahan adat Minangkabau.',
     image: 'https://picsum.photos/400/300?random=2',
-    owner: 'Butik Bunda Minang'
+    owner: 'Butik Bunda Minang',
+    contactNumber: '6288267051392'
   },
   {
     id: '3',
@@ -33,7 +35,8 @@ const PRODUCTS: Product[] = [
     price: 65000,
     description: 'Rendang sapi asli yang dimasak dengan kayu bakar selama 8 jam. Tahan lama dan praktis untuk dibawa sebagai oleh-oleh.',
     image: 'https://picsum.photos/400/300?random=3',
-    owner: 'Dapur Uni Emi'
+    owner: 'Dapur Uni Emi',
+    contactNumber: '6288267051392'
   },
   {
     id: '4',
@@ -42,7 +45,8 @@ const PRODUCTS: Product[] = [
     price: 25000,
     description: 'Keripik singkong renyah dengan balutan bumbu balado pedas manis yang menggugah selera.',
     image: 'https://picsum.photos/400/300?random=4',
-    owner: 'Snack Minang Raya'
+    owner: 'Snack Minang Raya',
+    contactNumber: '6288267051392'
   },
   {
     id: '5',
@@ -51,7 +55,8 @@ const PRODUCTS: Product[] = [
     price: 150000,
     description: 'Miniatur Rumah Gadang dari kayu berkualitas. Sangat cocok untuk hiasan meja atau kado spesial.',
     image: 'https://picsum.photos/400/300?random=5',
-    owner: 'Art Solsel'
+    owner: 'Art Solsel',
+    contactNumber: '6288267051392'
   },
   {
     id: '6',
@@ -60,7 +65,8 @@ const PRODUCTS: Product[] = [
     price: 45000,
     description: 'Teh hitam kualitas ekspor dari perkebunan teh tertua di Sumatera. Rasa pekat dan menenangkan.',
     image: 'https://picsum.photos/400/300?random=6',
-    owner: 'Teh Nusantara'
+    owner: 'Teh Nusantara',
+    contactNumber: '6288267051392'
   },
 ];
 
@@ -175,7 +181,7 @@ const App: React.FC = () => {
                 </li>
                 <li className="flex items-center gap-3">
                   <Phone size={18} className="text-solok-gold" />
-                  <span>+62 812 3456 7890</span>
+                  <span>+62 882 6705 1392</span>
                 </li>
                 <li className="flex gap-4 mt-2">
                   <a href="#" className="bg-gray-800 p-2 rounded-full hover:bg-solok-gold transition-colors"><Instagram size={18} /></a>

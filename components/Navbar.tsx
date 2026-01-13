@@ -13,6 +13,13 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleJoinPartner = () => {
+    // Direct link to WhatsApp for partnership registration
+    const phoneNumber = "6288267051392"; // Admin number
+    const message = "Halo Admin, saya pelaku usaha di Solok Selatan dan tertarik untuk bergabung menjadi Mitra UMKM Digital.";
+    window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+  };
+
   return (
     <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/90 backdrop-blur-md shadow-md py-4' : 'bg-transparent py-6'}`}>
       <div className="container mx-auto px-6 flex justify-between items-center">
@@ -40,7 +47,10 @@ export const Navbar: React.FC = () => {
               {item}
             </a>
           ))}
-          <button className="bg-solok-red hover:bg-red-900 text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-all shadow-lg flex items-center gap-2">
+          <button 
+            onClick={handleJoinPartner}
+            className="bg-solok-red hover:bg-red-900 text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-all shadow-lg flex items-center gap-2 transform hover:scale-105"
+          >
             <Sparkles size={16} />
             Mitra UMKM
           </button>
@@ -66,6 +76,15 @@ export const Navbar: React.FC = () => {
               {item}
             </a>
           ))}
+           <button 
+            onClick={() => {
+              handleJoinPartner();
+              setMobileMenuOpen(false);
+            }}
+            className="bg-solok-red text-white py-3 rounded-lg text-center font-semibold mt-2 flex justify-center items-center gap-2"
+          >
+            <Sparkles size={16} /> Daftar Mitra UMKM
+          </button>
         </div>
       )}
     </nav>

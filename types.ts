@@ -6,6 +6,7 @@ export interface Product {
   description: string;
   image: string;
   owner: string;
+  contactNumber?: string;
 }
 
 export interface BusinessTip {

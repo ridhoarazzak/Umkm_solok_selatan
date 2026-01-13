@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Product, GeminiStatus } from '../types';
 import { generateMarketingCopy } from '../services/geminiService';
-import { ShoppingCart, Wand2, Loader2, Heart } from 'lucide-react';
+import { ShoppingCart, Wand2, Loader2, Heart, MessageCircle } from 'lucide-react';
 
 interface ProductCardProps {
   product: Product;
@@ -20,6 +20,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     } catch (e) {
       setStatus(GeminiStatus.ERROR);
     }
+  };
+
+  const handleBuy = () => {
+    const phoneNumber = product.contactNumber || "6288267051392"; // Fallback number
+    const message = `Halo ${product.owner}, saya tertarik untuk membeli produk "${product.name}" yang ada di Aplikasi UMKM Solok Selatan. Apakah stok masih tersedia?`;
+    window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
   return (
@@ -64,8 +70,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         )}
 
         <div className="flex gap-2 mt-4 pt-4 border-t border-gray-100">
-          <button className="flex-1 bg-gray-900 text-white py-2.5 rounded-lg text-sm font-semibold hover:bg-solok-red transition-colors flex justify-center items-center gap-2">
-            <ShoppingCart size={16} /> Beli
+          <button 
+            onClick={handleBuy}
+            className="flex-1 bg-gray-900 text-white py-2.5 rounded-lg text-sm font-semibold hover:bg-green-600 transition-colors flex justify-center items-center gap-2"
+          >
+            <MessageCircle size={18} /> Beli via WA
           </button>
           
           <button 
