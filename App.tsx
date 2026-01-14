@@ -3,13 +3,15 @@ import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { ProductCard } from './components/ProductCard';
 import { BusinessAssistant } from './components/BusinessAssistant';
+import { Toast, ToastType } from './components/Toast';
+import { RegisterModal } from './components/RegisterModal';
 import { Product, PlaceResult, GeminiStatus } from './types';
-import { MapPin, Phone, Instagram, Facebook, Search, Map, Loader2, ArrowUpRight, AlertCircle } from 'lucide-react';
+import { MapPin, Phone, Instagram, Facebook, Search, Map, Loader2, ArrowUpRight, AlertCircle, PlusCircle, ChevronDown } from 'lucide-react';
 import { useLanguage } from './contexts/LanguageContext';
 import { searchPlacesInSolok } from './services/geminiService';
 import ReactMarkdown from 'react-markdown';
 
-// Mock Data ID
+// Mock Data ID (Tetap sama, bisa ditambah hingga ratusan item)
 const PRODUCTS_ID: Product[] = [
   {
     id: '1',
@@ -69,6 +71,26 @@ const PRODUCTS_ID: Product[] = [
     description: 'Teh hitam kualitas ekspor dari perkebunan teh tertua di Sumatera. Rasa pekat dan menenangkan.',
     image: 'https://picsum.photos/400/300?random=6',
     owner: 'Teh Nusantara',
+    contactNumber: '6288267051392'
+  },
+   {
+    id: '7',
+    name: 'Galamai Solok',
+    category: 'Kuliner',
+    price: 35000,
+    description: 'Dodol khas Minangkabau dengan tekstur kenyal dan rasa manis gula aren asli.',
+    image: 'https://picsum.photos/400/300?random=7',
+    owner: 'Dapur Nenek',
+    contactNumber: '6288267051392'
+  },
+   {
+    id: '8',
+    name: 'Tas Anyaman Pandan',
+    category: 'Kerajinan',
+    price: 75000,
+    description: 'Tas ramah lingkungan dari daun pandan yang dianyam rapi oleh ibu-ibu PKK.',
+    image: 'https://picsum.photos/400/300?random=8',
+    owner: 'Kreatif Mandiri',
     contactNumber: '6288267051392'
   },
 ];
@@ -135,28 +157,71 @@ const PRODUCTS_EN: Product[] = [
     owner: 'Nusantara Tea',
     contactNumber: '6288267051392'
   },
+   {
+    id: '7',
+    name: 'Galamai Solok',
+    category: 'Culinary',
+    price: 35000,
+    description: 'Typical Minangkabau dodol with a chewy texture and sweet taste of real palm sugar.',
+    image: 'https://picsum.photos/400/300?random=7',
+    owner: 'Grandma Kitchen',
+    contactNumber: '6288267051392'
+  },
+   {
+    id: '8',
+    name: 'Pandan Woven Bag',
+    category: 'Crafts',
+    price: 75000,
+    description: 'Eco-friendly bag made from pandan leaves neatly woven by PKK mothers.',
+    image: 'https://picsum.photos/400/300?random=8',
+    owner: 'Creative Independent',
+    contactNumber: '6288267051392'
+  },
 ];
 
 const App: React.FC = () => {
   const { t, language } = useLanguage();
-  const displayedProducts = language === 'id' ? PRODUCTS_ID : PRODUCTS_EN;
+  const allProducts = language === 'id' ? PRODUCTS_ID : PRODUCTS_EN;
+  
+  // Pagination State
+  const [visibleCount, setVisibleCount] = useState(6);
+  const displayedProducts = allProducts.slice(0, visibleCount);
 
   // Search Logic
   const [searchQuery, setSearchQuery] = useState('');
   const [searchStatus, setSearchStatus] = useState<GeminiStatus>(GeminiStatus.IDLE);
   const [searchResult, setSearchResult] = useState<PlaceResult | null>(null);
+  
+  // Toast Notification State
+  const [toast, setToast] = useState<{msg: string, type: ToastType, show: boolean}>({msg: '', type: 'info', show: false});
+
+  // Register Modal State
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+
+  const showToast = (msg: string, type: ToastType) => {
+    setToast({ msg, type, show: true });
+  };
 
   const handleSearch = async (query: string) => {
     if (!query.trim()) return;
+    
     setSearchStatus(GeminiStatus.LOADING);
     setSearchResult(null);
+    showToast('Sedang mencari lokasi di Google Maps...', 'info'); // Feedback Instant
+
     try {
       const result = await searchPlacesInSolok(query);
       setSearchResult(result);
       setSearchStatus(GeminiStatus.SUCCESS);
+      showToast('Lokasi berhasil ditemukan!', 'success');
     } catch (e) {
       setSearchStatus(GeminiStatus.ERROR);
+      showToast('Gagal memuat data lokasi. Coba lagi.', 'error');
     }
+  };
+
+  const handleLoadMore = () => {
+    setVisibleCount(prev => prev + 6);
   };
 
   return (
@@ -164,16 +229,34 @@ const App: React.FC = () => {
       <Navbar />
       <Hero />
       
+      <Toast 
+        message={toast.msg} 
+        type={toast.type} 
+        isVisible={toast.show} 
+        onClose={() => setToast({...toast, show: false})} 
+      />
+
+      <RegisterModal isOpen={isRegisterOpen} onClose={() => setIsRegisterOpen(false)} />
+
       {/* Product Section */}
       <section id="produk" className="py-20 container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-4">
-            {t.products.title}
-          </h2>
-          <div className="w-24 h-1 bg-solok-gold mx-auto mb-6"></div>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            {t.products.subtitle}
-          </p>
+        <div className="flex flex-col md:flex-row justify-between items-end mb-10 gap-4">
+          <div>
+             <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-2">
+              {t.products.title}
+            </h2>
+            <div className="w-24 h-1 bg-solok-gold mb-4"></div>
+            <p className="text-gray-600 max-w-xl">
+              {t.products.subtitle}
+            </p>
+          </div>
+          <button 
+            onClick={() => setIsRegisterOpen(true)}
+            className="bg-green-700 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-800 transition-all flex items-center gap-2 shadow-lg"
+          >
+            <PlusCircle size={20} />
+            {language === 'id' ? 'Daftarkan Usaha Anda' : 'Register Your Business'}
+          </button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -182,11 +265,21 @@ const App: React.FC = () => {
           ))}
         </div>
 
-        <div className="mt-16 text-center">
-          <button className="border-2 border-gray-900 text-gray-900 px-8 py-3 rounded-full font-semibold hover:bg-gray-900 hover:text-white transition-all duration-300">
-            {t.products.view_all}
-          </button>
-        </div>
+        {/* Load More Button - Only show if there are more products */}
+        {visibleCount < allProducts.length && (
+          <div className="mt-12 text-center">
+            <button 
+              onClick={handleLoadMore}
+              className="border-2 border-gray-900 text-gray-900 px-8 py-3 rounded-full font-semibold hover:bg-gray-900 hover:text-white transition-all duration-300 flex items-center gap-2 mx-auto"
+            >
+              <ChevronDown size={20} />
+              {language === 'id' ? 'Lihat Lebih Banyak' : 'Load More Products'}
+            </button>
+            <p className="text-xs text-gray-400 mt-2">
+              Menampilkan {displayedProducts.length} dari {allProducts.length} produk
+            </p>
+          </div>
+        )}
       </section>
 
       {/* Explore Section (Google Maps Grounding) */}
