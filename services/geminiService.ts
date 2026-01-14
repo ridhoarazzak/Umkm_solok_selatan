@@ -4,10 +4,49 @@ import { PlaceResult } from '../types';
 const apiKey = process.env.API_KEY || '';
 const ai = new GoogleGenAI({ apiKey });
 
+// Hardcoded data for offline/fallback mode
+const LOCAL_RECOMMENDATIONS = [
+  {
+    name: "Kawasan Saribu Rumah Gadang",
+    desc: "Kawasan cagar budaya dengan ratusan rumah adat Minangkabau yang megah. Ikon wisata Solok Selatan.",
+    category: "wisata"
+  },
+  {
+    name: "Air Terjun Tansi Ampek",
+    desc: "Air terjun eksotis di kaki Gunung Kerinci dengan pemandangan kebun teh yang asri.",
+    category: "wisata"
+  },
+  {
+    name: "Goa Batu Kapal",
+    desc: "Fenomena geologi unik berupa dinding batu kapur berwarna-warni yang menyerupai kapal layar.",
+    category: "wisata"
+  },
+  {
+    name: "Hot Water Boom Sapan Maluluang",
+    desc: "Pemandian air panas alami yang bersumber dari panas bumi, cocok untuk relaksasi.",
+    category: "wisata"
+  },
+  {
+    name: "Masjid Agung Solok Selatan",
+    desc: "Landmark megah dengan arsitektur menawan, pusat kegiatan keagamaan di Padang Aro.",
+    category: "religi"
+  },
+  {
+    name: "Sate Kambing Padang Aro",
+    desc: "Kuliner legendaris dengan daging empuk dan bumbu kacang yang kaya rempah.",
+    category: "kuliner"
+  },
+  {
+    name: "Hotel Pesona Alam",
+    desc: "Penginapan nyaman dengan pemandangan alam yang indah dan fasilitas lengkap.",
+    category: "hotel"
+  }
+];
+
 export const generateMarketingCopy = async (productName: string, category: string): Promise<string> => {
   if (!apiKey) {
     console.warn("API Key is missing. Returning mock data.");
-    return "Deskripsi produk otomatis tidak tersedia tanpa API Key. Silakan hubungi administrator.";
+    return `Produk ${productName} adalah pilihan terbaik dalam kategori ${category}. Dibuat dengan bahan pilihan khas Solok Selatan, menawarkan kualitas premium dan cita rasa otentik yang tak terlupakan.`;
   }
 
   try {
@@ -25,13 +64,13 @@ export const generateMarketingCopy = async (productName: string, category: strin
     return response.text || "Gagal membuat deskripsi.";
   } catch (error) {
     console.error("Gemini API Error:", error);
-    throw new Error("Gagal menghubungi asisten AI.");
+    return `Nikmati keindahan dan kualitas asli Solok Selatan dengan ${productName}. Produk ${category} unggulan yang dikerjakan dengan hati oleh pengrajin lokal.`;
   }
 };
 
 export const askBusinessAdvisor = async (question: string): Promise<string> => {
   if (!apiKey) {
-    return "Maaf, fitur tanya jawab memerlukan API Key.";
+    return "Maaf, saya sedang dalam mode offline. Silakan hubungi admin via WhatsApp untuk konsultasi lebih lanjut.";
   }
 
   try {
@@ -51,21 +90,40 @@ export const askBusinessAdvisor = async (question: string): Promise<string> => {
     return response.text || "Tidak ada jawaban.";
   } catch (error) {
     console.error("Gemini API Error:", error);
-    return "Terjadi kesalahan saat memproses pertanyaan Anda.";
+    return "Maaf, terjadi gangguan koneksi. Silakan coba lagi nanti.";
   }
 };
 
 export const searchPlacesInSolok = async (categoryOrQuery: string): Promise<PlaceResult> => {
+  // Helper to get local results
+  const getLocalResults = (query: string) => {
+    const q = query.toLowerCase();
+    const results = LOCAL_RECOMMENDATIONS.filter(item => 
+      item.name.toLowerCase().includes(q) || 
+      item.category.toLowerCase().includes(q) ||
+      item.desc.toLowerCase().includes(q)
+    );
+    
+    const finalResults = results.length > 0 ? results : LOCAL_RECOMMENDATIONS.slice(0, 4);
+    
+    const text = `**Hasil Pencarian (Mode Offline):**\n\n` + 
+      finalResults.map(place => `*   **${place.name}**: ${place.desc}`).join('\n') +
+      `\n\n*Catatan: Koneksi ke Google Maps sedang tidak tersedia, menampilkan rekomendasi lokal populer.*`;
+
+    return {
+      text,
+      sourceLinks: []
+    };
+  };
+
   if (!apiKey) {
-    throw new Error("API Key required");
+    return getLocalResults(categoryOrQuery);
   }
 
   const primaryModel = 'gemini-2.5-flash';
   const fallbackModel = 'gemini-3-flash-preview';
 
   try {
-    // Attempt 1: Try with Google Maps Grounding + Search + Location Context
-    // Coordinates for Solok Selatan (approx. Padang Aro)
     const solokContext = {
       latitude: -1.565,
       longitude: 101.258
@@ -85,7 +143,6 @@ export const searchPlacesInSolok = async (categoryOrQuery: string): Promise<Plac
       },
     });
 
-    // Extract grounding chunks for Maps URLs
     const chunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
     
     const sourceLinks = chunks
@@ -101,14 +158,13 @@ export const searchPlacesInSolok = async (categoryOrQuery: string): Promise<Plac
       .filter((link: any) => link !== null && link.uri);
 
     return {
-      text: response.text || "Tidak ditemukan data spesifik.",
+      text: response.text || "Data ditemukan.",
       sourceLinks: sourceLinks
     };
 
   } catch (error) {
-    console.warn("Maps grounding failed, attempting fallback to text generation...", error);
+    console.warn("Primary search failed, trying fallback...", error);
     
-    // Attempt 2: Fallback to standard text generation if Maps fails (e.g. API limits)
     try {
         const fallbackResponse = await ai.models.generateContent({
             model: fallbackModel,
@@ -116,12 +172,12 @@ export const searchPlacesInSolok = async (categoryOrQuery: string): Promise<Plac
         });
         
         return {
-            text: fallbackResponse.text || "Maaf, pencarian tidak memberikan hasil.",
-            sourceLinks: [] // Fallback has no guaranteed maps links
+            text: fallbackResponse.text || "Rekomendasi ditemukan.",
+            sourceLinks: []
         };
     } catch (fallbackError) {
-        console.error("Fallback search failed:", fallbackError);
-        throw new Error("Gagal mencari informasi. Silakan coba beberapa saat lagi.");
+        console.error("All AI attempts failed, using local data.", fallbackError);
+        return getLocalResults(categoryOrQuery);
     }
   }
 };

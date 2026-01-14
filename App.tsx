@@ -6,7 +6,7 @@ import { BusinessAssistant } from './components/BusinessAssistant';
 import { Toast, ToastType } from './components/Toast';
 import { RegisterModal } from './components/RegisterModal';
 import { Product, PlaceResult, GeminiStatus } from './types';
-import { MapPin, Phone, Instagram, Facebook, Search, Map, Loader2, ArrowUpRight, AlertCircle, PlusCircle, ChevronDown } from 'lucide-react';
+import { MapPin, Phone, Instagram, Facebook, Search, Map, Loader2, ArrowUpRight, AlertCircle, PlusCircle, ChevronDown, WifiOff } from 'lucide-react';
 import { useLanguage } from './contexts/LanguageContext';
 import { searchPlacesInSolok } from './services/geminiService';
 import ReactMarkdown from 'react-markdown';
@@ -207,18 +207,16 @@ const App: React.FC = () => {
     
     setSearchStatus(GeminiStatus.LOADING);
     setSearchResult(null);
-    showToast('Sedang mencari lokasi di Google Maps...', 'info');
+    showToast('Sedang mencari lokasi...', 'info');
 
     try {
       const result = await searchPlacesInSolok(query);
       setSearchResult(result);
       setSearchStatus(GeminiStatus.SUCCESS);
-      showToast('Lokasi berhasil ditemukan!', 'success');
+      showToast('Hasil ditemukan!', 'success');
     } catch (e: any) {
       setSearchStatus(GeminiStatus.ERROR);
-      // Show actual error message if available, otherwise generic
-      const errMsg = e?.message || 'Gagal memuat data lokasi. Coba lagi.';
-      showToast(errMsg, 'error');
+      showToast('Pencarian gagal.', 'error');
     }
   };
 
@@ -333,15 +331,15 @@ const App: React.FC = () => {
               </div>
             </div>
 
-            {/* Error State */}
+            {/* Error State - Simplified */}
             {searchStatus === GeminiStatus.ERROR && (
               <div className="bg-red-500/10 border border-red-500/50 rounded-xl p-4 text-center animate-fade-in-up">
                 <div className="flex items-center justify-center gap-2 text-red-400 mb-1">
-                  <AlertCircle size={20} />
-                  <span className="font-bold">Gagal memuat data</span>
+                  <WifiOff size={20} />
+                  <span className="font-bold">Koneksi Bermasalah</span>
                 </div>
                 <p className="text-sm text-red-300">
-                   Jaringan sibuk atau API Key tidak memiliki akses ke Maps. Sistem menggunakan mode cadangan jika memungkinkan.
+                   Silakan periksa koneksi internet Anda dan coba lagi.
                 </p>
               </div>
             )}
