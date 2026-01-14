@@ -28,6 +28,9 @@ interface Translations {
     buy_wa: string;
     ai_marketing: string;
     ai_button_title: string;
+    visit_profile: string;
+    share_product: string;
+    share_success: string;
   };
   explore: {
     title: string;
@@ -48,6 +51,11 @@ interface Translations {
     f2_desc: string;
     f3_title: string;
     f3_desc: string;
+  };
+  social: {
+    title: string;
+    subtitle: string;
+    follow_btn: string;
   };
   about: {
     title: string;
@@ -96,7 +104,10 @@ const translations: Record<Language, Translations> = {
       sold_by: 'Dijual oleh',
       buy_wa: 'Beli via WA',
       ai_marketing: 'Copy Marketing AI',
-      ai_button_title: 'Buat deskripsi menarik dengan AI'
+      ai_button_title: 'Buat deskripsi menarik dengan AI',
+      visit_profile: 'Kunjungi Profil',
+      share_product: 'Bagikan',
+      share_success: 'Link produk disalin!'
     },
     explore: {
       title: 'Jelajah Solok Selatan',
@@ -117,6 +128,11 @@ const translations: Record<Language, Translations> = {
       f2_desc: 'Dikurasi secara ketat untuk menjamin kepuasan pelanggan.',
       f3_title: 'Dukung Ekonomi',
       f3_desc: 'Setiap pembelian membantu perekonomian warga lokal.'
+    },
+    social: {
+      title: 'Cerita UMKM Kita',
+      subtitle: 'Intip keseruan dan aktivitas terbaru para pelaku UMKM Solok Selatan di media sosial.',
+      follow_btn: 'Ikuti di Instagram'
     },
     about: {
       title: 'Tentang UMKM Solok Selatan',
@@ -163,7 +179,10 @@ const translations: Record<Language, Translations> = {
       sold_by: 'Sold by',
       buy_wa: 'Buy via WA',
       ai_marketing: 'AI Marketing Copy',
-      ai_button_title: 'Generate description with AI'
+      ai_button_title: 'Generate description with AI',
+      visit_profile: 'Visit Profile',
+      share_product: 'Share',
+      share_success: 'Link copied!'
     },
     explore: {
       title: 'Explore South Solok',
@@ -184,6 +203,11 @@ const translations: Record<Language, Translations> = {
       f2_desc: 'Strictly curated to ensure customer satisfaction.',
       f3_title: 'Support Economy',
       f3_desc: 'Every purchase helps the local economy.'
+    },
+    social: {
+      title: 'Our MSME Stories',
+      subtitle: 'Peek into the excitement and latest activities of South Solok MSMEs on social media.',
+      follow_btn: 'Follow on Instagram'
     },
     about: {
       title: 'About South Solok MSMEs',

@@ -25,6 +25,8 @@ const PRODUCTS_ID: Product[] = [
     image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&q=80&w=800',
     owner: 'Kopi Alam Surambi',
     contactNumber: '6281234567890',
+    instagram: 'kopisolsel_official',
+    facebook: 'Kopi Alam Surambi',
     variants: [
       { name: 'Roasted Bean (250g)', price: 95000 },
       { name: 'Ground / Bubuk Halus (250g)', price: 95000 },
@@ -42,6 +44,7 @@ const PRODUCTS_ID: Product[] = [
     image: 'https://images.unsplash.com/photo-1603083569762-b9e76100914c?auto=format&fit=crop&q=80&w=800',
     owner: 'Dapur Minang Asli',
     contactNumber: '6281122334455',
+    instagram: 'dapurminang.uniemi',
     variants: [
         { name: 'Paru Kering (250g)', price: 75000 },
         { name: 'Rendang Daging Basah (500g)', price: 160000 },
@@ -58,6 +61,7 @@ const PRODUCTS_ID: Product[] = [
     image: 'https://images.unsplash.com/photo-1544967082-d9d3f661eb10?auto=format&fit=crop&q=80&w=800',
     owner: 'Galeri Tenun Bundo',
     contactNumber: '6281987654321',
+    facebook: 'Galeri Tenun Bundo',
     variants: [
       { name: 'Full Set (Kain + Selendang)', price: 2500000 },
       { name: 'Kain Sarung Saja', price: 1800000 },
@@ -74,6 +78,7 @@ const PRODUCTS_ID: Product[] = [
     image: 'https://images.unsplash.com/photo-1566453837860-637cc97c9ee3?auto=format&fit=crop&q=80&w=800',
     owner: 'Snack Rumah Gadang',
     contactNumber: '6285566778899',
+    instagram: 'snack_rumahgadang',
     variants: [
       { name: 'Balado Merah (250g)', price: 30000 },
       { name: 'Balado Merah (500g)', price: 55000 },
@@ -90,6 +95,7 @@ const PRODUCTS_ID: Product[] = [
     image: 'https://images.unsplash.com/photo-1505374830113-5853234d748f?auto=format&fit=crop&q=80&w=800',
     owner: 'Solsel Craft Center',
     contactNumber: '6289988776655',
+    instagram: 'solselcraft',
     variants: [
       { name: 'Size S (15x10cm)', price: 450000 },
       { name: 'Size M (30x20cm)', price: 850000 },
@@ -106,6 +112,7 @@ const PRODUCTS_ID: Product[] = [
     image: 'https://images.unsplash.com/photo-1576092768241-dec231844f74?auto=format&fit=crop&q=80&w=800',
     owner: 'Mitra Teh Liki',
     contactNumber: '628123123123',
+    facebook: 'Teh Liki Official',
     variants: [
       { name: 'Pouch (100g)', price: 50000 },
       { name: 'Tin Can / Kaleng (100g)', price: 85000 },
@@ -122,6 +129,7 @@ const PRODUCTS_ID: Product[] = [
     image: 'https://images.unsplash.com/photo-1526417502920-5c68f44d1544?auto=format&fit=crop&q=80&w=800',
     owner: 'Sanggar Batik Nagari',
     contactNumber: '6287711223344',
+    instagram: 'batiktanahliek_nagari',
     variants: [
       { name: 'Bahan Kain Katun (2m)', price: 375000 },
       { name: 'Bahan Kain Sutra (2m)', price: 1200000 },
@@ -154,6 +162,7 @@ const PRODUCTS_ID: Product[] = [
     image: 'https://images.unsplash.com/photo-1606312619070-d48b4c652a52?auto=format&fit=crop&q=80&w=800',
     owner: 'Galamai Uni Des',
     contactNumber: '628555444333',
+    facebook: 'Galamai Uni Des',
     variants: [
       { name: 'Original (Pack 500g)', price: 40000 },
       { name: 'Wijen (Pack 500g)', price: 45000 },
@@ -170,6 +179,7 @@ const PRODUCTS_ID: Product[] = [
     image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=800',
     owner: 'Kreatif Mandiri Solsel',
     contactNumber: '628777888999',
+    instagram: 'kreatifmandiri_craft',
     variants: [
       { name: 'Tote Bag Medium', price: 125000 },
       { name: 'Sling Bag / Tas Selempang', price: 95000 },
@@ -191,6 +201,8 @@ const PRODUCTS_EN: Product[] = [
     image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&q=80&w=800',
     owner: 'Kopi Alam Surambi',
     contactNumber: '6281234567890',
+    instagram: 'kopisolsel_official',
+    facebook: 'Kopi Alam Surambi',
     variants: [
       { name: 'Roasted Bean (250g)', price: 95000 },
       { name: 'Ground Coffee (250g)', price: 95000 },
@@ -208,6 +220,7 @@ const PRODUCTS_EN: Product[] = [
     image: 'https://images.unsplash.com/photo-1603083569762-b9e76100914c?auto=format&fit=crop&q=80&w=800',
     owner: 'Dapur Minang Asli',
     contactNumber: '6281122334455',
+    instagram: 'dapurminang.uniemi',
     variants: [
         { name: 'Crispy Lung (250g)', price: 75000 },
         { name: 'Wet Beef Rendang (500g)', price: 160000 },
@@ -224,6 +237,7 @@ const PRODUCTS_EN: Product[] = [
     image: 'https://images.unsplash.com/photo-1544967082-d9d3f661eb10?auto=format&fit=crop&q=80&w=800',
     owner: 'Galeri Tenun Bundo',
     contactNumber: '6281987654321',
+    facebook: 'Galeri Tenun Bundo',
     variants: [
       { name: 'Full Set (Cloth + Shawl)', price: 2500000 },
       { name: 'Sarong Only', price: 1800000 },
@@ -240,6 +254,7 @@ const PRODUCTS_EN: Product[] = [
     image: 'https://images.unsplash.com/photo-1566453837860-637cc97c9ee3?auto=format&fit=crop&q=80&w=800',
     owner: 'Snack Rumah Gadang',
     contactNumber: '6285566778899',
+    instagram: 'snack_rumahgadang',
     variants: [
       { name: 'Red Balado (250g)', price: 30000 },
       { name: 'Red Balado (500g)', price: 55000 },
@@ -256,6 +271,7 @@ const PRODUCTS_EN: Product[] = [
     image: 'https://images.unsplash.com/photo-1505374830113-5853234d748f?auto=format&fit=crop&q=80&w=800',
     owner: 'Solsel Craft Center',
     contactNumber: '6289988776655',
+    instagram: 'solselcraft',
     variants: [
       { name: 'Size S (15x10cm)', price: 450000 },
       { name: 'Size M (30x20cm)', price: 850000 },
@@ -272,6 +288,7 @@ const PRODUCTS_EN: Product[] = [
     image: 'https://images.unsplash.com/photo-1576092768241-dec231844f74?auto=format&fit=crop&q=80&w=800',
     owner: 'Mitra Teh Liki',
     contactNumber: '628123123123',
+    facebook: 'Teh Liki Official',
     variants: [
       { name: 'Pouch (100g)', price: 50000 },
       { name: 'Tin Can (100g)', price: 85000 },
@@ -288,6 +305,7 @@ const PRODUCTS_EN: Product[] = [
     image: 'https://images.unsplash.com/photo-1526417502920-5c68f44d1544?auto=format&fit=crop&q=80&w=800',
     owner: 'Sanggar Batik Nagari',
     contactNumber: '6287711223344',
+    instagram: 'batiktanahliek_nagari',
     variants: [
       { name: 'Cotton Fabric (2m)', price: 375000 },
       { name: 'Silk Fabric (2m)', price: 1200000 },
@@ -320,6 +338,7 @@ const PRODUCTS_EN: Product[] = [
     image: 'https://images.unsplash.com/photo-1606312619070-d48b4c652a52?auto=format&fit=crop&q=80&w=800',
     owner: 'Galamai Uni Des',
     contactNumber: '628555444333',
+    facebook: 'Galamai Uni Des',
     variants: [
       { name: 'Original (Pack 500g)', price: 40000 },
       { name: 'Sesame (Pack 500g)', price: 45000 },
@@ -336,6 +355,7 @@ const PRODUCTS_EN: Product[] = [
     image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=800',
     owner: 'Kreatif Mandiri Solsel',
     contactNumber: '628777888999',
+    instagram: 'kreatifmandiri_craft',
     variants: [
       { name: 'Tote Bag Medium', price: 125000 },
       { name: 'Sling Bag', price: 95000 },
@@ -517,6 +537,42 @@ const App: React.FC = () => {
             </button>
           </div>
         )}
+      </section>
+
+      {/* Social Media Hub (NEW SECTION) */}
+      <section className="py-24 bg-gray-50 border-t border-gray-200">
+        <div className="container mx-auto px-6 text-center">
+           <div className="flex justify-center mb-4">
+             <div className="p-3 bg-pink-100 text-pink-600 rounded-full">
+               <Instagram size={32} />
+             </div>
+           </div>
+           <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-4">{t.social.title}</h2>
+           <p className="text-gray-500 max-w-2xl mx-auto mb-12">{t.social.subtitle}</p>
+
+           {/* Instagram Mock Grid */}
+           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
+             {[
+               "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&q=80&w=400",
+               "https://images.unsplash.com/photo-1610996884100-3363364f8992?auto=format&fit=crop&q=80&w=400",
+               "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?auto=format&fit=crop&q=80&w=400",
+               "https://images.unsplash.com/photo-1626574921671-50e50882e88a?auto=format&fit=crop&q=80&w=400"
+             ].map((img, i) => (
+               <div key={i} className="relative group overflow-hidden rounded-xl aspect-square cursor-pointer">
+                 <img src={img} alt="Instagram Feed" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
+                   <Instagram size={32} />
+                 </div>
+               </div>
+             ))}
+           </div>
+           
+           <div className="mt-10">
+             <a href="https://instagram.com" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-8 py-3 bg-white border border-gray-300 rounded-full font-bold text-gray-700 hover:bg-gray-50 hover:text-pink-600 transition-all shadow-sm">
+               {t.social.follow_btn} <ArrowUpRight size={18} />
+             </a>
+           </div>
+        </div>
       </section>
 
       {/* Explore Section (Google Maps Grounding) - UI Refined */}

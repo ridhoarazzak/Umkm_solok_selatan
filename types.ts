@@ -12,7 +12,9 @@ export interface Product {
   image: string;
   owner: string;
   contactNumber?: string;
-  variants?: Variant[]; // Optional array for product variants
+  instagram?: string; // New: Username IG
+  facebook?: string;  // New: Username/Page FB
+  variants?: Variant[];
 }
 
 export interface BusinessTip {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Product, GeminiStatus } from '../types';
 import { generateMarketingCopy } from '../services/geminiService';
-import { Wand2, Loader2, Heart, MessageCircle, BadgeCheck, ListFilter } from 'lucide-react';
+import { Wand2, Loader2, Heart, MessageCircle, BadgeCheck, ListFilter, Facebook, Instagram, Share2, Check } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 interface ProductCardProps {
@@ -12,6 +12,7 @@ interface ProductCardProps {
 export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetail }) => {
   const [aiDescription, setAiDescription] = useState<string | null>(null);
   const [status, setStatus] = useState<GeminiStatus>(GeminiStatus.IDLE);
+  const [isCopied, setIsCopied] = useState(false);
   const { t, language } = useLanguage();
 
   const handleGenerateDescription = async () => {
@@ -38,6 +39,27 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetail 
       window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
     }
   };
+  
+  const handleShare = async () => {
+    const shareData = {
+      title: product.name,
+      text: `Cek produk keren ini: ${product.name} dari UMKM Solok Selatan!`,
+      url: window.location.href
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        console.log('Error sharing', err);
+      }
+    } else {
+      // Fallback: Copy to clipboard
+      navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`);
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    }
+  };
 
   const hasVariants = product.variants && product.variants.length > 0;
 
@@ -57,8 +79,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetail 
                 {product.category}
              </span>
         </div>
-        <button className="absolute top-4 right-4 p-2.5 bg-white/90 backdrop-blur-md rounded-full text-gray-400 hover:text-solok-red hover:bg-white transition-all shadow-sm transform hover:scale-110">
-          <Heart size={20} />
+        
+        {/* Share Button overlaid on image */}
+        <button 
+          onClick={(e) => { e.stopPropagation(); handleShare(); }}
+          className="absolute top-4 right-4 p-2.5 bg-white/90 backdrop-blur-md rounded-full text-gray-600 hover:text-solok-gold hover:bg-white transition-all shadow-sm transform hover:scale-110 z-20"
+          title={t.products.share_product}
+        >
+          {isCopied ? <Check size={20} className="text-green-600" /> : <Share2 size={20} />}
         </button>
         
         {/* Verified Badge Overlay */}
@@ -70,10 +98,24 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetail 
 
       {/* Content Section */}
       <div className="p-7 flex flex-col flex-grow">
-        <div className="flex justify-between items-baseline mb-3">
+        <div className="flex justify-between items-baseline mb-2">
            <h3 className="text-xl font-bold text-gray-900 group-hover:text-solok-gold transition-colors line-clamp-1 cursor-pointer" onClick={handleAction} title={product.name}>
              {product.name}
            </h3>
+        </div>
+
+        {/* Social Links Small */}
+        <div className="flex gap-3 mb-4 text-xs text-gray-400">
+          {product.instagram && (
+            <a href={`https://instagram.com/${product.instagram}`} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:text-pink-600 transition-colors">
+              <Instagram size={12} /> @{product.instagram}
+            </a>
+          )}
+          {product.facebook && (
+            <a href={`https://facebook.com/${product.facebook}`} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:text-blue-600 transition-colors">
+              <Facebook size={12} /> {product.facebook}
+            </a>
+          )}
         </div>
         
         <p className="font-serif text-2xl font-bold text-gray-900 mb-4">
