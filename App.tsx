@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { ProductCard } from './components/ProductCard';
 import { BusinessAssistant } from './components/BusinessAssistant';
-import { Product } from './types';
-import { MapPin, Phone, Instagram, Facebook } from 'lucide-react';
+import { Product, PlaceResult, GeminiStatus } from './types';
+import { MapPin, Phone, Instagram, Facebook, Search, Map, Loader2, ArrowUpRight } from 'lucide-react';
 import { useLanguage } from './contexts/LanguageContext';
+import { searchPlacesInSolok } from './services/geminiService';
+import ReactMarkdown from 'react-markdown';
 
 // Mock Data ID
 const PRODUCTS_ID: Product[] = [
@@ -139,6 +141,23 @@ const App: React.FC = () => {
   const { t, language } = useLanguage();
   const displayedProducts = language === 'id' ? PRODUCTS_ID : PRODUCTS_EN;
 
+  // Search Logic
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchStatus, setSearchStatus] = useState<GeminiStatus>(GeminiStatus.IDLE);
+  const [searchResult, setSearchResult] = useState<PlaceResult | null>(null);
+
+  const handleSearch = async (query: string) => {
+    setSearchStatus(GeminiStatus.LOADING);
+    setSearchResult(null);
+    try {
+      const result = await searchPlacesInSolok(query);
+      setSearchResult(result);
+      setSearchStatus(GeminiStatus.SUCCESS);
+    } catch (e) {
+      setSearchStatus(GeminiStatus.ERROR);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-50">
       <Navbar />
@@ -166,6 +185,95 @@ const App: React.FC = () => {
           <button className="border-2 border-gray-900 text-gray-900 px-8 py-3 rounded-full font-semibold hover:bg-gray-900 hover:text-white transition-all duration-300">
             {t.products.view_all}
           </button>
+        </div>
+      </section>
+
+      {/* Explore Section (Google Maps Grounding) */}
+      <section id="jelajah" className="py-20 bg-gray-900 text-white relative overflow-hidden">
+        <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/shattered-island.png')]"></div>
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="text-center mb-12">
+            <span className="text-solok-gold text-sm font-bold tracking-widest uppercase mb-2 block">Google Maps Integration</span>
+            <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4">{t.explore.title}</h2>
+            <p className="text-gray-400 max-w-2xl mx-auto">{t.explore.subtitle}</p>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            {/* Search Controls */}
+            <div className="bg-white/10 backdrop-blur-md p-2 rounded-2xl border border-white/20 mb-8">
+              <div className="flex flex-col md:flex-row gap-2">
+                 <input 
+                   type="text" 
+                   value={searchQuery}
+                   onChange={(e) => setSearchQuery(e.target.value)}
+                   onKeyDown={(e) => e.key === 'Enter' && handleSearch(searchQuery)}
+                   placeholder={t.explore.search_placeholder}
+                   className="flex-grow bg-transparent text-white placeholder-gray-400 px-4 py-3 focus:outline-none"
+                 />
+                 <button 
+                  onClick={() => handleSearch(searchQuery)}
+                  disabled={searchStatus === GeminiStatus.LOADING}
+                  className="bg-solok-gold text-white px-6 py-3 rounded-xl font-bold hover:bg-yellow-600 transition-colors flex items-center justify-center gap-2"
+                 >
+                   {searchStatus === GeminiStatus.LOADING ? <Loader2 className="animate-spin" /> : <Search size={20} />}
+                   {t.explore.search_btn}
+                 </button>
+              </div>
+              
+              {/* Quick Categories */}
+              <div className="flex gap-2 mt-4 px-2 pb-2 overflow-x-auto">
+                {[t.explore.cat_culinary, t.explore.cat_tourism, t.explore.cat_craft, t.explore.cat_hotel].map(cat => (
+                  <button 
+                    key={cat} 
+                    onClick={() => {
+                      setSearchQuery(cat);
+                      handleSearch(cat);
+                    }}
+                    className="whitespace-nowrap px-4 py-2 bg-white/5 hover:bg-white/20 rounded-full text-sm border border-white/10 transition-colors"
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Results Area */}
+            {searchResult && (
+              <div className="bg-white rounded-2xl p-6 md:p-8 text-gray-900 shadow-2xl animate-fade-in-up">
+                <div className="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
+                  <div className="bg-green-100 p-2 rounded-lg text-green-700">
+                    <Map size={24} />
+                  </div>
+                  <h3 className="text-xl font-bold">{t.explore.result_title}</h3>
+                </div>
+                
+                <div className="prose prose-slate max-w-none mb-8">
+                  <ReactMarkdown>{searchResult.text}</ReactMarkdown>
+                </div>
+
+                {/* Grounding Source Links */}
+                {searchResult.sourceLinks.length > 0 && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                    {searchResult.sourceLinks.map((link, idx) => (
+                      <a 
+                        key={idx} 
+                        href={link.uri} 
+                        target="_blank" 
+                        rel="noreferrer"
+                        className="flex items-center justify-between p-3 bg-gray-50 hover:bg-blue-50 border border-gray-200 hover:border-blue-200 rounded-lg transition-all group"
+                      >
+                        <div className="flex items-center gap-2 overflow-hidden">
+                          <MapPin size={16} className="text-solok-red flex-shrink-0" />
+                          <span className="text-sm font-medium truncate">{link.title}</span>
+                        </div>
+                        <ArrowUpRight size={14} className="text-gray-400 group-hover:text-blue-500" />
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </section>
 

@@ -15,6 +15,14 @@ export interface BusinessTip {
   icon: string;
 }
 
+export interface PlaceResult {
+  text: string;
+  sourceLinks: {
+    title: string;
+    uri: string;
+  }[];
+}
+
 export enum GeminiStatus {
   IDLE,
   LOADING,

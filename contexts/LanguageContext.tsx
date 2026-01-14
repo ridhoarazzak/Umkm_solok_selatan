@@ -10,6 +10,7 @@ interface Translations {
     contact: string;
     partner: string;
     partner_desc: string;
+    explore: string;
   };
   hero: {
     tag: string;
@@ -26,6 +27,18 @@ interface Translations {
     buy_wa: string;
     ai_marketing: string;
     ai_button_title: string;
+  };
+  explore: {
+    title: string;
+    subtitle: string;
+    cat_culinary: string;
+    cat_tourism: string;
+    cat_craft: string;
+    cat_hotel: string;
+    search_placeholder: string;
+    search_btn: string;
+    result_title: string;
+    source_map: string;
   };
   features: {
     f1_title: string;
@@ -64,7 +77,8 @@ const translations: Record<Language, Translations> = {
       about: 'Tentang',
       contact: 'Kontak',
       partner: 'Mitra UMKM',
-      partner_desc: 'Daftar Mitra UMKM'
+      partner_desc: 'Daftar Mitra UMKM',
+      explore: 'Jelajah'
     },
     hero: {
       tag: 'Karya Anak Nagari',
@@ -81,6 +95,18 @@ const translations: Record<Language, Translations> = {
       buy_wa: 'Beli via WA',
       ai_marketing: 'Copy Marketing AI',
       ai_button_title: 'Buat deskripsi menarik dengan AI'
+    },
+    explore: {
+      title: 'Jelajah Solok Selatan',
+      subtitle: 'Cari rekomendasi tempat kuliner, wisata, dan UMKM langsung dari Google Maps.',
+      cat_culinary: 'Kuliner',
+      cat_tourism: 'Wisata',
+      cat_craft: 'Kerajinan',
+      cat_hotel: 'Penginapan',
+      search_placeholder: 'Cari "Sate Kambing enak"...',
+      search_btn: 'Cari Lokasi',
+      result_title: 'Rekomendasi AI & Google Maps:',
+      source_map: 'Buka di Maps'
     },
     features: {
       f1_title: 'Asli Lokal',
@@ -117,7 +143,8 @@ const translations: Record<Language, Translations> = {
       about: 'About',
       contact: 'Contact',
       partner: 'Join as Partner',
-      partner_desc: 'Register as Partner'
+      partner_desc: 'Register as Partner',
+      explore: 'Explore'
     },
     hero: {
       tag: 'Creation of Local Artisans',
@@ -134,6 +161,18 @@ const translations: Record<Language, Translations> = {
       buy_wa: 'Buy via WA',
       ai_marketing: 'AI Marketing Copy',
       ai_button_title: 'Generate description with AI'
+    },
+    explore: {
+      title: 'Explore South Solok',
+      subtitle: 'Find recommendations for culinary, tourism, and MSMEs directly from Google Maps.',
+      cat_culinary: 'Culinary',
+      cat_tourism: 'Tourism',
+      cat_craft: 'Crafts',
+      cat_hotel: 'Hotels',
+      search_placeholder: 'Search "Best Satay"...',
+      search_btn: 'Search Location',
+      result_title: 'AI & Google Maps Recommendations:',
+      source_map: 'Open in Maps'
     },
     features: {
       f1_title: 'Authentic Local',

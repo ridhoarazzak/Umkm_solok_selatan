@@ -1,4 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
+import { PlaceResult } from '../types';
 
 const apiKey = process.env.API_KEY || '';
 const ai = new GoogleGenAI({ apiKey });
@@ -43,7 +44,7 @@ export const askBusinessAdvisor = async (question: string): Promise<string> => {
       model: 'gemini-3-flash-preview',
       contents: prompt,
       config: {
-        thinkingConfig: { thinkingBudget: 1024 } // Use reasoning for advice
+        thinkingConfig: { thinkingBudget: 1024 } 
       }
     });
 
@@ -51,5 +52,44 @@ export const askBusinessAdvisor = async (question: string): Promise<string> => {
   } catch (error) {
     console.error("Gemini API Error:", error);
     return "Terjadi kesalahan saat memproses pertanyaan Anda.";
+  }
+};
+
+export const searchPlacesInSolok = async (categoryOrQuery: string): Promise<PlaceResult> => {
+  if (!apiKey) {
+    throw new Error("API Key required");
+  }
+
+  try {
+    // We must use gemini-2.5-flash for Maps Grounding
+    const model = 'gemini-2.5-flash';
+    
+    const response = await ai.models.generateContent({
+      model: model,
+      contents: `Carikan rekomendasi tempat ${categoryOrQuery} terbaik di Kabupaten Solok Selatan, Sumatera Barat. 
+      Berikan deskripsi singkat kenapa tempat itu menarik.`,
+      config: {
+        tools: [{ googleMaps: {} }],
+        // Provide tool config with retrieval config if needed, but for general queries it's optional
+      },
+    });
+
+    // Extract grounding chunks for Maps URLs
+    const chunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
+    const sourceLinks = chunks
+      .filter((chunk: any) => chunk.web?.uri || chunk.web?.title) // Maps grounding often returns as web/maps type chunks
+      .map((chunk: any) => ({
+        title: chunk.web?.title || "Lihat di Peta",
+        uri: chunk.web?.uri || "#"
+      }));
+
+    return {
+      text: response.text || "Tidak ditemukan data.",
+      sourceLinks: sourceLinks
+    };
+
+  } catch (error) {
+    console.error("Gemini Maps Error:", error);
+    throw new Error("Gagal mencari lokasi.");
   }
 };

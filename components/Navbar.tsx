@@ -30,6 +30,7 @@ export const Navbar: React.FC = () => {
   const menuItems = [
     { label: t.navbar.home, href: '#beranda' },
     { label: t.navbar.products, href: '#produk' },
+    { label: t.navbar.explore, href: '#jelajah' },
     { label: t.navbar.about, href: '#tentang' },
     { label: t.navbar.contact, href: '#kontak' },
   ];
