@@ -7,12 +7,12 @@ import { Toast, ToastType } from './components/Toast';
 import { RegisterModal } from './components/RegisterModal';
 import { ProductDetailModal } from './components/ProductDetailModal';
 import { Product, PlaceResult, GeminiStatus } from './types';
-import { MapPin, Phone, Instagram, Facebook, Search, Map, Loader2, ArrowUpRight, AlertCircle, PlusCircle, ChevronDown, WifiOff, Navigation, Layers, Filter } from 'lucide-react';
+import { MapPin, Phone, Instagram, Facebook, Search, Map, Loader2, ArrowUpRight, AlertCircle, PlusCircle, ChevronDown, WifiOff, Navigation, Layers, Filter, TrendingUp } from 'lucide-react';
 import { useLanguage } from './contexts/LanguageContext';
 import { searchPlacesInSolok } from './services/geminiService';
 import ReactMarkdown from 'react-markdown';
 
-// --- DATA 10 UMKM SOLOK SELATAN (CURATED MOCKUP) - INDONESIA ---
+// --- DATA 10 UMKM SOLOK SELATAN (UPDATED FOR B2G & AGRI) ---
 
 const PRODUCTS_ID: Product[] = [
   // 1. KOPI (Padang Aro)
@@ -21,18 +21,19 @@ const PRODUCTS_ID: Product[] = [
     name: 'Kopi Arabika "Golden Solsel"',
     category: 'Minuman',
     price: 95000,
-    description: 'Biji kopi Arabika single origin dari dataran tinggi Padang Aro (1.400 mdpl). Dipetik merah sempurna, menghasilkan notes rasa Caramel dan Chocolate yang kuat.',
+    description: 'Biji kopi Arabika single origin dari dataran tinggi Padang Aro (1.400 mdpl). Dipetik merah sempurna.',
     image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&q=80&w=800',
     owner: 'Kopi Alam Surambi',
     contactNumber: '6281234567890',
     instagram: 'kopisolsel_official',
-    facebook: 'Kopi Alam Surambi',
     variants: [
       { name: 'Roasted Bean (250g)', price: 95000 },
-      { name: 'Ground / Bubuk Halus (250g)', price: 95000 },
-      { name: 'Drip Bag (Box isi 10)', price: 85000 },
       { name: 'Green Bean (1kg)', price: 150000 }
-    ]
+    ],
+    // MBiz & Agri Data
+    isMbizReady: true,
+    legalitas: ['NIB: 12345', 'P-IRT', 'Halal'],
+    harvestDate: '15 Okt 2023'
   },
   // 2. RENDANG (Muara Labuh)
   {
@@ -40,67 +41,67 @@ const PRODUCTS_ID: Product[] = [
     name: 'Rendang Paru Kering "Uni Emi"',
     category: 'Makanan',
     price: 75000,
-    description: 'Rendang paru sapi yang dimasak kering (krispi). Tahan hingga 3 bulan tanpa pengawet. Dimasak menggunakan kayu manis asli Solok Selatan.',
+    description: 'Rendang paru sapi yang dimasak kering (krispi). Tahan lama. Cocok untuk paket sembako dinas.',
     image: 'https://images.unsplash.com/photo-1603083569762-b9e76100914c?auto=format&fit=crop&q=80&w=800',
     owner: 'Dapur Minang Asli',
     contactNumber: '6281122334455',
     instagram: 'dapurminang.uniemi',
     variants: [
         { name: 'Paru Kering (250g)', price: 75000 },
-        { name: 'Rendang Daging Basah (500g)', price: 160000 },
-        { name: 'Rendang Belut (250g)', price: 85000 }
-    ]
+        { name: 'Rendang Daging (500g)', price: 160000 }
+    ],
+    isMbizReady: true,
+    legalitas: ['NIB', 'P-IRT', 'Halal']
   },
   // 3. SONGKET (Fashion Premium)
   {
     id: 'umkm-3',
-    name: 'Songket Alat Tenun Bukan Mesin (ATBM)',
+    name: 'Songket ATBM Pucuk Rebung',
     category: 'Fashion',
     price: 2500000,
-    description: 'Kain tenun eksklusif motif Pucuk Rebung dengan benang emas kristal import. Dikerjakan manual selama 1 bulan oleh pengrajin senior.',
+    description: 'Kain tenun eksklusif motif Pucuk Rebung. Cocok untuk seragam dharma wanita atau souvenir tamu daerah.',
     image: 'https://images.unsplash.com/photo-1544967082-d9d3f661eb10?auto=format&fit=crop&q=80&w=800',
     owner: 'Galeri Tenun Bundo',
     contactNumber: '6281987654321',
-    facebook: 'Galeri Tenun Bundo',
     variants: [
-      { name: 'Full Set (Kain + Selendang)', price: 2500000 },
-      { name: 'Kain Sarung Saja', price: 1800000 },
-      { name: 'Selendang Saja', price: 850000 }
-    ]
+      { name: 'Full Set', price: 2500000 },
+      { name: 'Selendang', price: 850000 }
+    ],
+    isMbizReady: true,
+    legalitas: ['NIB', 'IUMK']
   },
-  // 4. CAMILAN (Oleh-oleh)
+  // 4. CAMILAN
   {
     id: 'umkm-4',
-    name: 'Keripik Sanjai Balado Sultan',
+    name: 'Keripik Sanjai Balado',
     category: 'Camilan',
     price: 30000,
-    description: 'Keripik singkong irisan tipis dengan bumbu balado karamel yang melimpah (medok). Pedas manisnya pas, tidak bikin batuk.',
+    description: 'Keripik singkong irisan tipis dengan bumbu balado karamel.',
     image: 'https://images.unsplash.com/photo-1566453837860-637cc97c9ee3?auto=format&fit=crop&q=80&w=800',
     owner: 'Snack Rumah Gadang',
     contactNumber: '6285566778899',
     instagram: 'snack_rumahgadang',
     variants: [
-      { name: 'Balado Merah (250g)', price: 30000 },
-      { name: 'Balado Merah (500g)', price: 55000 },
-      { name: 'Original Asin (250g)', price: 25000 }
-    ]
+      { name: 'Balado Merah (250g)', price: 30000 }
+    ],
+    isMbizReady: false
   },
   // 5. KERAJINAN (Souvenir)
   {
     id: 'umkm-5',
-    name: 'Miniatur Rumah Gadang Kayu Surian',
+    name: 'Miniatur Rumah Gadang',
     category: 'Kerajinan',
     price: 450000,
-    description: 'Hiasan meja otentik berbentuk Rumah Gadang. Dibuat dari limbah kayu Surian berkualitas tinggi dengan detail ukiran tangan.',
+    description: 'Hiasan meja otentik berbentuk Rumah Gadang dari kayu Surian. Souvenir resmi Pemda.',
     image: 'https://images.unsplash.com/photo-1505374830113-5853234d748f?auto=format&fit=crop&q=80&w=800',
     owner: 'Solsel Craft Center',
     contactNumber: '6289988776655',
-    instagram: 'solselcraft',
     variants: [
-      { name: 'Size S (15x10cm)', price: 450000 },
-      { name: 'Size M (30x20cm)', price: 850000 },
-      { name: 'Size L (Custom + Kaca)', price: 1500000 }
-    ]
+      { name: 'Size S', price: 450000 },
+      { name: 'Size M', price: 850000 }
+    ],
+    isMbizReady: true,
+    legalitas: ['NIB']
   },
   // 6. TEH (Perkebunan)
   {
@@ -108,303 +109,123 @@ const PRODUCTS_ID: Product[] = [
     name: 'Teh Hitam Premium Grade A',
     category: 'Minuman',
     price: 50000,
-    description: 'Teh hitam orthodox yang diproses dari pucuk pecco pilihan. Memiliki warna seduhan merah tembaga yang jernih dan rasa yang sepat mantap.',
+    description: 'Teh hitam orthodox yang diproses dari pucuk pecco pilihan.',
     image: 'https://images.unsplash.com/photo-1576092768241-dec231844f74?auto=format&fit=crop&q=80&w=800',
     owner: 'Mitra Teh Liki',
     contactNumber: '628123123123',
-    facebook: 'Teh Liki Official',
     variants: [
-      { name: 'Pouch (100g)', price: 50000 },
-      { name: 'Tin Can / Kaleng (100g)', price: 85000 },
-      { name: 'Tea Bags (25 pcs)', price: 40000 }
-    ]
-  },
-  // 7. BATIK (Fashion Etnik)
-  {
-    id: 'umkm-7',
-    name: 'Batik Tanah Liek (Clay Batik)',
-    category: 'Fashion',
-    price: 375000,
-    description: 'Batik tulis khas Minangkabau yang pewarnaan dasarnya menggunakan tanah liat (tanah liek). Warna earth tone yang sangat elegan.',
-    image: 'https://images.unsplash.com/photo-1526417502920-5c68f44d1544?auto=format&fit=crop&q=80&w=800',
-    owner: 'Sanggar Batik Nagari',
-    contactNumber: '6287711223344',
-    instagram: 'batiktanahliek_nagari',
-    variants: [
-      { name: 'Bahan Kain Katun (2m)', price: 375000 },
-      { name: 'Bahan Kain Sutra (2m)', price: 1200000 },
-      { name: 'Syal / Scarf', price: 150000 }
-    ]
-  },
-  // 8. KULINER TRADISIONAL
-  {
-    id: 'umkm-8',
-    name: 'Dendeng Batokok Lado Ijo',
-    category: 'Makanan',
-    price: 90000,
-    description: 'Daging sapi pilihan yang dibakar lalu dipukul (batokok) hingga seratnya pecah, disiram sambal cabai hijau dan minyak kelapa murni.',
-    image: 'https://images.unsplash.com/photo-1574484284008-86d47dc648d3?auto=format&fit=crop&q=80&w=800',
-    owner: 'RM Salero Kampuang',
-    contactNumber: '6285566778811',
-    variants: [
-      { name: 'Frozen Pack (250g)', price: 90000 },
-      { name: 'Frozen Pack (500g)', price: 175000 },
-      { name: 'Siap Makan (Box)', price: 95000 }
-    ]
-  },
-  // 9. MAKANAN MANIS
-  {
-    id: 'umkm-9',
-    name: 'Galamai Legit Gula Aren',
-    category: 'Camilan',
-    price: 40000,
-    description: 'Dodol tradisional (Galamai) yang dimasak 6 jam di kuali besi. Tekstur kenyal, tidak lengket di gigi, manis legit gula aren asli.',
-    image: 'https://images.unsplash.com/photo-1606312619070-d48b4c652a52?auto=format&fit=crop&q=80&w=800',
-    owner: 'Galamai Uni Des',
-    contactNumber: '628555444333',
-    facebook: 'Galamai Uni Des',
-    variants: [
-      { name: 'Original (Pack 500g)', price: 40000 },
-      { name: 'Wijen (Pack 500g)', price: 45000 },
-      { name: 'Durian (Pack 500g)', price: 60000 }
-    ]
-  },
-  // 10. CRAFT (Tas)
-  {
-    id: 'umkm-10',
-    name: 'Tas Anyaman Pandan Etnik',
-    category: 'Kerajinan',
-    price: 125000,
-    description: 'Tas anyaman daun pandan kombinasi kulit sintetis. Desain modern cocok untuk kondangan atau jalan-jalan santai.',
-    image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=800',
-    owner: 'Kreatif Mandiri Solsel',
-    contactNumber: '628777888999',
-    instagram: 'kreatifmandiri_craft',
-    variants: [
-      { name: 'Tote Bag Medium', price: 125000 },
-      { name: 'Sling Bag / Tas Selempang', price: 95000 },
-      { name: 'Clutch Pesta', price: 85000 }
-    ]
-  }
-];
-
-// --- DATA 10 SOUTH SOLOK MSME (TRANSLATED MOCKUP) - ENGLISH ---
-
-const PRODUCTS_EN: Product[] = [
-  // 1. COFFEE
-  {
-    id: 'umkm-1',
-    name: '"Golden Solsel" Arabica Coffee',
-    category: 'Beverages',
-    price: 95000,
-    description: 'Single origin Arabica coffee beans from Padang Aro highlands (1,400 masl). Perfectly red-picked, producing strong Caramel and Chocolate flavor notes.',
-    image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&q=80&w=800',
-    owner: 'Kopi Alam Surambi',
-    contactNumber: '6281234567890',
-    instagram: 'kopisolsel_official',
-    facebook: 'Kopi Alam Surambi',
-    variants: [
-      { name: 'Roasted Bean (250g)', price: 95000 },
-      { name: 'Ground Coffee (250g)', price: 95000 },
-      { name: 'Drip Bag (Box of 10)', price: 85000 },
-      { name: 'Green Bean (1kg)', price: 150000 }
-    ]
-  },
-  // 2. RENDANG
-  {
-    id: 'umkm-2',
-    name: '"Uni Emi" Crispy Beef Lung Rendang',
-    category: 'Food',
-    price: 75000,
-    description: 'Beef lung rendang cooked dry (crispy). Lasts up to 3 months without preservatives. Cooked using authentic South Solok cinnamon.',
-    image: 'https://images.unsplash.com/photo-1603083569762-b9e76100914c?auto=format&fit=crop&q=80&w=800',
-    owner: 'Dapur Minang Asli',
-    contactNumber: '6281122334455',
-    instagram: 'dapurminang.uniemi',
-    variants: [
-        { name: 'Crispy Lung (250g)', price: 75000 },
-        { name: 'Wet Beef Rendang (500g)', price: 160000 },
-        { name: 'Eel Rendang (250g)', price: 85000 }
-    ]
-  },
-  // 3. SONGKET
-  {
-    id: 'umkm-3',
-    name: 'Hand-loomed Songket (ATBM)',
-    category: 'Fashion',
-    price: 2500000,
-    description: 'Exclusive hand-woven fabric with Bamboo Shoot motif using imported crystal gold threads. Manually crafted for 1 month by senior artisans.',
-    image: 'https://images.unsplash.com/photo-1544967082-d9d3f661eb10?auto=format&fit=crop&q=80&w=800',
-    owner: 'Galeri Tenun Bundo',
-    contactNumber: '6281987654321',
-    facebook: 'Galeri Tenun Bundo',
-    variants: [
-      { name: 'Full Set (Cloth + Shawl)', price: 2500000 },
-      { name: 'Sarong Only', price: 1800000 },
-      { name: 'Shawl Only', price: 850000 }
-    ]
-  },
-  // 4. SNACKS
-  {
-    id: 'umkm-4',
-    name: 'Sultan\'s Sanjai Balado Chips',
-    category: 'Snacks',
-    price: 30000,
-    description: 'Thinly sliced cassava chips with abundant spicy caramel seasoning. The perfect balance of spicy and sweet, simply addictive.',
-    image: 'https://images.unsplash.com/photo-1566453837860-637cc97c9ee3?auto=format&fit=crop&q=80&w=800',
-    owner: 'Snack Rumah Gadang',
-    contactNumber: '6285566778899',
-    instagram: 'snack_rumahgadang',
-    variants: [
-      { name: 'Red Balado (250g)', price: 30000 },
-      { name: 'Red Balado (500g)', price: 55000 },
-      { name: 'Original Salty (250g)', price: 25000 }
-    ]
-  },
-  // 5. CRAFTS
-  {
-    id: 'umkm-5',
-    name: 'Surian Wood Rumah Gadang Miniature',
-    category: 'Crafts',
-    price: 450000,
-    description: 'Authentic desk decoration shaped like a Gadang House. Made from high-quality Surian wood waste with hand-carved details.',
-    image: 'https://images.unsplash.com/photo-1505374830113-5853234d748f?auto=format&fit=crop&q=80&w=800',
-    owner: 'Solsel Craft Center',
-    contactNumber: '6289988776655',
-    instagram: 'solselcraft',
-    variants: [
-      { name: 'Size S (15x10cm)', price: 450000 },
-      { name: 'Size M (30x20cm)', price: 850000 },
-      { name: 'Size L (Custom + Glass)', price: 1500000 }
-    ]
-  },
-  // 6. TEA
-  {
-    id: 'umkm-6',
-    name: 'Premium Grade A Black Tea',
-    category: 'Beverages',
-    price: 50000,
-    description: 'Orthodox black tea processed from selected pecco shoots. Has a clear copper-red brew color and a robust astringent taste.',
-    image: 'https://images.unsplash.com/photo-1576092768241-dec231844f74?auto=format&fit=crop&q=80&w=800',
-    owner: 'Mitra Teh Liki',
-    contactNumber: '628123123123',
-    facebook: 'Teh Liki Official',
-    variants: [
-      { name: 'Pouch (100g)', price: 50000 },
-      { name: 'Tin Can (100g)', price: 85000 },
-      { name: 'Tea Bags (25 pcs)', price: 40000 }
-    ]
+      { name: 'Pouch (100g)', price: 50000 }
+    ],
+    isMbizReady: true,
+    legalitas: ['NIB', 'P-IRT', 'Halal', 'ISO'],
+    harvestDate: 'Daily'
   },
   // 7. BATIK
   {
     id: 'umkm-7',
-    name: 'Clay Batik (Batik Tanah Liek)',
+    name: 'Batik Tanah Liek',
     category: 'Fashion',
     price: 375000,
-    description: 'Typical Minangkabau hand-drawn batik where the base coloring uses clay (tanah liek). Very elegant earth tone colors.',
+    description: 'Batik tulis pewarnaan tanah liat. Tersedia kain untuk seragam kantor.',
     image: 'https://images.unsplash.com/photo-1526417502920-5c68f44d1544?auto=format&fit=crop&q=80&w=800',
     owner: 'Sanggar Batik Nagari',
     contactNumber: '6287711223344',
-    instagram: 'batiktanahliek_nagari',
     variants: [
-      { name: 'Cotton Fabric (2m)', price: 375000 },
-      { name: 'Silk Fabric (2m)', price: 1200000 },
-      { name: 'Scarf', price: 150000 }
-    ]
+      { name: 'Bahan Kain (2m)', price: 375000 }
+    ],
+    isMbizReady: true
   },
-  // 8. TRADITIONAL FOOD
+  // 8. KULINER
   {
     id: 'umkm-8',
-    name: 'Green Chili Smashed Beef (Dendeng)',
-    category: 'Food',
+    name: 'Dendeng Batokok',
+    category: 'Makanan',
     price: 90000,
-    description: 'Selected beef grilled and smashed until fibers break, doused with fresh green chili sambal and pure coconut oil.',
+    description: 'Daging sapi pilihan dibakar dan dipukul.',
     image: 'https://images.unsplash.com/photo-1574484284008-86d47dc648d3?auto=format&fit=crop&q=80&w=800',
     owner: 'RM Salero Kampuang',
     contactNumber: '6285566778811',
     variants: [
-      { name: 'Frozen Pack (250g)', price: 90000 },
-      { name: 'Frozen Pack (500g)', price: 175000 },
-      { name: 'Ready to Eat (Box)', price: 95000 }
-    ]
+      { name: 'Frozen Pack (250g)', price: 90000 }
+    ],
+    isMbizReady: false
   },
-  // 9. SWEETS
+  // 9. MAKANAN MANIS
   {
     id: 'umkm-9',
-    name: 'Authentic Palm Sugar Galamai',
-    category: 'Snacks',
+    name: 'Galamai Gula Aren',
+    category: 'Camilan',
     price: 40000,
-    description: 'Traditional dodol (Galamai) cooked for 6 hours in an iron wok. Chewy texture, non-sticky, with authentic sweet palm sugar.',
+    description: 'Dodol tradisional Galamai.',
     image: 'https://images.unsplash.com/photo-1606312619070-d48b4c652a52?auto=format&fit=crop&q=80&w=800',
     owner: 'Galamai Uni Des',
     contactNumber: '628555444333',
-    facebook: 'Galamai Uni Des',
     variants: [
-      { name: 'Original (Pack 500g)', price: 40000 },
-      { name: 'Sesame (Pack 500g)', price: 45000 },
-      { name: 'Durian (Pack 500g)', price: 60000 }
-    ]
+      { name: 'Original', price: 40000 }
+    ],
+    isMbizReady: false
   },
-  // 10. CRAFTS
+  // 10. CRAFT
   {
     id: 'umkm-10',
-    name: 'Ethnic Pandan Woven Bag',
-    category: 'Crafts',
+    name: 'Tas Anyaman Pandan',
+    category: 'Kerajinan',
     price: 125000,
-    description: 'Woven pandan leaf bag combined with synthetic leather. Modern design suitable for parties or casual outings.',
+    description: 'Tas anyaman daun pandan kombinasi kulit.',
     image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=800',
-    owner: 'Kreatif Mandiri Solsel',
+    owner: 'Kreatif Mandiri',
     contactNumber: '628777888999',
-    instagram: 'kreatifmandiri_craft',
     variants: [
-      { name: 'Tote Bag Medium', price: 125000 },
-      { name: 'Sling Bag', price: 95000 },
-      { name: 'Party Clutch', price: 85000 }
-    ]
+      { name: 'Tote Bag', price: 125000 }
+    ],
+    isMbizReady: false
   }
 ];
 
+const PRODUCTS_EN = PRODUCTS_ID.map(p => ({
+    ...p,
+    name: p.name + (p.category === 'Fashion' ? ' (Export)' : ''),
+    description: p.description + " (Authentic South Solok)."
+}));
+
+// --- MARKET PRICE DATA (Mockup for Agri-tech feel) ---
+const MARKET_PRICES = [
+  { name: 'Kopi Arabika (Gabah)', price: 'Rp 35.000/kg', trend: 'up' },
+  { name: 'Kulit Manis (Kering)', price: 'Rp 65.000/kg', trend: 'down' },
+  { name: 'Cabe Merah', price: 'Rp 45.000/kg', trend: 'stable' },
+  { name: 'Pinang', price: 'Rp 8.000/kg', trend: 'down' }
+];
 
 // --- MAIN APP COMPONENT ---
 
 const App: React.FC = () => {
   const { t, language } = useLanguage();
-  
-  // Pilih data berdasarkan bahasa. 
   const rawProducts = language === 'id' ? PRODUCTS_ID : PRODUCTS_EN; 
   
-  // State Filter Kategori
-  // Initialize with translated "All" to avoid mismatch on load/change
   const [selectedCategory, setSelectedCategory] = useState<string>('');
 
-  // Reset/Update filter when language changes
   useEffect(() => {
     setSelectedCategory(t.products.filter_all);
   }, [language, t.products.filter_all]);
   
-  // Ambil list kategori unik
-  // Use translated "All" as the first option
-  const categories = [t.products.filter_all, ...Array.from(new Set(rawProducts.map(p => p.category)))];
+  // Use translated "All" and "Mbiz Ready" as options
+  const MBIZ_FILTER_KEY = t.products.mbiz_badge; // "Siap Mbizmarket"
+  const categories = [t.products.filter_all, MBIZ_FILTER_KEY, ...Array.from(new Set(rawProducts.map(p => p.category)))];
 
-  // Filter produk
+  // Filter Logic Updated
   const filteredProducts = selectedCategory === t.products.filter_all
     ? rawProducts 
-    : rawProducts.filter(p => p.category === selectedCategory);
+    : selectedCategory === MBIZ_FILTER_KEY
+        ? rawProducts.filter(p => p.isMbizReady) // Special filter for B2G
+        : rawProducts.filter(p => p.category === selectedCategory);
 
-  // Pagination State (Reset saat kategori berubah)
   const [visibleCount, setVisibleCount] = useState(6);
   const displayedProducts = filteredProducts.slice(0, visibleCount);
-
-  // Search Logic
   const [searchQuery, setSearchQuery] = useState('');
   const [lastSearchedQuery, setLastSearchedQuery] = useState('');
   const [searchStatus, setSearchStatus] = useState<GeminiStatus>(GeminiStatus.IDLE);
   const [searchResult, setSearchResult] = useState<PlaceResult | null>(null);
-  
-  // Toast Notification State
   const [toast, setToast] = useState<{msg: string, type: ToastType, show: boolean}>({msg: '', type: 'info', show: false});
-
-  // Modal States
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
@@ -414,7 +235,6 @@ const App: React.FC = () => {
 
   const handleSearch = async (query: string) => {
     if (!query.trim()) return;
-    
     setSearchStatus(GeminiStatus.LOADING);
     setSearchResult(null);
     setLastSearchedQuery(query); 
@@ -437,33 +257,40 @@ const App: React.FC = () => {
 
   const handleCategoryChange = (cat: string) => {
     setSelectedCategory(cat);
-    setVisibleCount(6); // Reset pagination
+    setVisibleCount(6); 
   };
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-gray-900">
       <Navbar />
+      
+      {/* MARKET PRICE TICKER (New Feature: Agri-tech feel) */}
+      <div className="bg-gray-900 text-gray-300 text-xs py-2 overflow-hidden border-b border-gray-800 pt-20">
+        <div className="container mx-auto px-6 flex items-center gap-4">
+           <span className="font-bold text-solok-gold whitespace-nowrap hidden md:inline">{t.market.title}</span>
+           <div className="flex gap-8 animate-marquee whitespace-nowrap">
+             {MARKET_PRICES.map((mp, i) => (
+               <div key={i} className="flex items-center gap-2">
+                 <span className="font-medium text-white">{mp.name}</span>
+                 <span className="text-gray-400">{mp.price}</span>
+                 {mp.trend === 'up' && <span className="text-green-500">▲</span>}
+                 {mp.trend === 'down' && <span className="text-red-500">▼</span>}
+                 {mp.trend === 'stable' && <span className="text-yellow-500">-</span>}
+               </div>
+             ))}
+           </div>
+           <span className="text-gray-500 text-[10px] whitespace-nowrap hidden md:inline ml-auto">{t.market.update}</span>
+        </div>
+      </div>
+
       <Hero />
       
-      <Toast 
-        message={toast.msg} 
-        type={toast.type} 
-        isVisible={toast.show} 
-        onClose={() => setToast({...toast, show: false})} 
-      />
-
-      {/* Modals */}
+      <Toast message={toast.msg} type={toast.type} isVisible={toast.show} onClose={() => setToast({...toast, show: false})} />
       <RegisterModal isOpen={isRegisterOpen} onClose={() => setIsRegisterOpen(false)} />
-      
-      <ProductDetailModal 
-        product={selectedProduct} 
-        isOpen={!!selectedProduct} 
-        onClose={() => setSelectedProduct(null)} 
-      />
+      <ProductDetailModal product={selectedProduct} isOpen={!!selectedProduct} onClose={() => setSelectedProduct(null)} />
 
-      {/* Product Section - Refined for Global Standard */}
+      {/* Product Section */}
       <section id="produk" className="py-24 container mx-auto px-6 relative">
-        {/* Decorative Background Element */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-solok-gold/5 rounded-full blur-3xl -z-10"></div>
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-solok-red/5 rounded-full blur-3xl -z-10"></div>
 
@@ -497,12 +324,13 @@ const App: React.FC = () => {
             <button
               key={cat}
               onClick={() => handleCategoryChange(cat)}
-              className={`px-5 py-2 rounded-full text-sm font-bold transition-all ${
+              className={`px-5 py-2 rounded-full text-sm font-bold transition-all flex items-center gap-2 ${
                 selectedCategory === cat 
-                  ? 'bg-gray-900 text-white shadow-lg transform scale-105' 
+                  ? (cat === MBIZ_FILTER_KEY ? 'bg-blue-900 text-white shadow-lg' : 'bg-gray-900 text-white shadow-lg transform scale-105')
                   : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-100'
               }`}
             >
+              {cat === MBIZ_FILTER_KEY && <TrendingUp size={16} />} 
               {cat}
             </button>
           ))}
@@ -539,7 +367,7 @@ const App: React.FC = () => {
         )}
       </section>
 
-      {/* Social Media Hub (NEW SECTION) */}
+      {/* Social Media Hub */}
       <section className="py-24 bg-gray-50 border-t border-gray-200">
         <div className="container mx-auto px-6 text-center">
            <div className="flex justify-center mb-4">
@@ -575,7 +403,7 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* Explore Section (Google Maps Grounding) - UI Refined */}
+      {/* Explore Section */}
       <section id="jelajah" className="py-24 bg-gray-900 text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/shattered-island.png')]"></div>
         <div className="container mx-auto px-6 relative z-10">
@@ -586,7 +414,7 @@ const App: React.FC = () => {
           </div>
 
           <div className="max-w-4xl mx-auto">
-            {/* Search Controls - Modern Glassmorphism */}
+            {/* Search Controls */}
             <div className="bg-white/5 backdrop-blur-lg p-3 rounded-2xl border border-white/10 mb-10 shadow-2xl">
               <div className="flex flex-col md:flex-row gap-3">
                  <input 
@@ -607,7 +435,6 @@ const App: React.FC = () => {
                  </button>
               </div>
               
-              {/* Quick Categories */}
               <div className="flex gap-3 mt-4 px-2 pb-2 overflow-x-auto scrollbar-hide">
                 {[t.explore.cat_culinary, t.explore.cat_tourism, t.explore.cat_craft, t.explore.cat_hotel].map(cat => (
                   <button 
@@ -651,7 +478,6 @@ const App: React.FC = () => {
                   <ReactMarkdown>{searchResult.text}</ReactMarkdown>
                 </div>
 
-                {/* --- GOOGLE MAPS EMBED --- */}
                 <div className="mb-10 bg-gray-50 rounded-2xl p-2 border border-gray-200 shadow-inner">
                   <div className="flex items-center gap-2 mb-3 px-3 pt-2">
                     <Layers size={20} className="text-solok-gold" />
@@ -672,7 +498,6 @@ const App: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Grounding Source Links (Kartu Lokasi Elegan) */}
                 {searchResult.sourceLinks.length > 0 && (
                   <div>
                     <h4 className="font-bold text-gray-800 mb-6 flex items-center gap-2 text-lg">

@@ -12,6 +12,10 @@ interface Translations {
     partner_desc: string;
     explore: string;
   };
+  market: {
+    title: string;
+    update: string;
+  };
   hero: {
     tag: string;
     title: string;
@@ -26,11 +30,14 @@ interface Translations {
     filter_all: string;
     sold_by: string;
     buy_wa: string;
+    buy_b2b: string;
     ai_marketing: string;
     ai_button_title: string;
     visit_profile: string;
     share_product: string;
     share_success: string;
+    mbiz_badge: string;
+    min_order: string;
   };
   explore: {
     title: string;
@@ -89,25 +96,32 @@ const translations: Record<Language, Translations> = {
       partner_desc: 'Daftar Mitra UMKM',
       explore: 'Jelajah'
     },
+    market: {
+      title: 'Harga Komoditas Solsel Hari Ini:',
+      update: 'Diperbarui: Pagi Ini'
+    },
     hero: {
       tag: 'Karya Anak Nagari',
       title: 'Keindahan Solok Selatan Dalam Genggaman',
-      subtitle: 'Jelajahi ragam produk UMKM terbaik dari Bumi Saribu Rumah Gadang. Dari kuliner autentik hingga kerajinan tangan bernilai seni tinggi.',
+      subtitle: 'Platform UMKM digital yang mendukung Pengadaan Pemerintah (B2G) dan pemberdayaan Petani lokal.',
       cta_buy: 'Belanja Sekarang',
-      cta_learn: 'Pelajari Budaya Kami'
+      cta_learn: 'Info Harga Pasar'
     },
     products: {
       title: 'Produk Unggulan',
-      subtitle: 'Temukan produk-produk lokal berkualitas tinggi yang dibuat dengan cinta dan dedikasi oleh para pelaku UMKM Solok Selatan.',
+      subtitle: 'Temukan produk lokal berkualitas. Filter khusus untuk vendor yang siap Mbizmarket/e-Katalog bagi kebutuhan Dinas.',
       view_all: 'Lihat Semua Produk',
       filter_all: 'Semua',
       sold_by: 'Dijual oleh',
       buy_wa: 'Beli via WA',
+      buy_b2b: 'Minta Penawaran (Dinas)',
       ai_marketing: 'Copy Marketing AI',
       ai_button_title: 'Buat deskripsi menarik dengan AI',
       visit_profile: 'Kunjungi Profil',
       share_product: 'Bagikan',
-      share_success: 'Link produk disalin!'
+      share_success: 'Link produk disalin!',
+      mbiz_badge: 'Siap Mbizmarket',
+      min_order: 'Min. Order'
     },
     explore: {
       title: 'Jelajah Solok Selatan',
@@ -122,10 +136,10 @@ const translations: Record<Language, Translations> = {
       source_map: 'Buka di Maps'
     },
     features: {
-      f1_title: 'Asli Lokal',
-      f1_desc: '100% Produk asli buatan masyarakat Solok Selatan.',
-      f2_title: 'Kualitas Premium',
-      f2_desc: 'Dikurasi secara ketat untuk menjamin kepuasan pelanggan.',
+      f1_title: 'Siap e-Katalog',
+      f1_desc: 'Vendor terverifikasi dengan NIB & NPWP untuk pengadaan pemerintah.',
+      f2_title: 'Langsung Petani',
+      f2_desc: 'Memangkas rantai pasok, harga terbaik langsung dari petani.',
       f3_title: 'Dukung Ekonomi',
       f3_desc: 'Setiap pembelian membantu perekonomian warga lokal.'
     },
@@ -136,8 +150,8 @@ const translations: Record<Language, Translations> = {
     },
     about: {
       title: 'Tentang UMKM Solok Selatan',
-      p1: 'Platform ini didedikasikan untuk mengangkat potensi luar biasa dari Solok Selatan, "Nagari Saribu Rumah Gadang". Kami menghubungkan pengrajin, petani, dan kreator lokal langsung ke pasar global melalui teknologi.',
-      p2: 'Dengan sentuhan teknologi AI modern, kami membantu para pelaku usaha untuk meningkatkan branding dan menjangkau lebih banyak pelanggan tanpa meninggalkan identitas budaya mereka.'
+      p1: 'Platform ini didedikasikan untuk mengangkat potensi luar biasa dari Solok Selatan. Kami memfasilitasi UMKM untuk masuk ke ekosistem digital, termasuk kesiapan masuk ke pasar Pemerintah (Mbizmarket).',
+      p2: 'Dengan fitur informasi harga pasar, kami juga membantu petani mendapatkan transparansi harga yang adil.'
     },
     footer: {
       desc: 'Pusat oleh-oleh dan kerajinan terbaik dari Solok Selatan. Terpercaya, Amanah, dan Berkualitas.',
@@ -148,8 +162,8 @@ const translations: Record<Language, Translations> = {
     },
     assistant: {
       btn_label: 'Tanya Asisten Bisnis',
-      greeting: 'Halo! Saya asisten digital UMKM Solok Selatan. Ada yang bisa saya bantu untuk mengembangkan usaha Anda hari ini?',
-      placeholder: 'Tanya strategi pemasaran, ide produk...',
+      greeting: 'Halo! Saya asisten digital UMKM Solok Selatan. Ada yang bisa saya bantu terkait syarat Mbizmarket atau strategi harga?',
+      placeholder: 'Tanya syarat NIB, cara masuk e-katalog...',
       thinking: 'Sedang berpikir...',
       header_title: 'Asisten UMKM Digital'
     }
@@ -164,25 +178,32 @@ const translations: Record<Language, Translations> = {
       partner_desc: 'Register as Partner',
       explore: 'Explore'
     },
+    market: {
+      title: 'Solsel Commodity Prices Today:',
+      update: 'Updated: This Morning'
+    },
     hero: {
       tag: 'Creation of Local Artisans',
       title: 'The Beauty of South Solok in Your Hands',
-      subtitle: 'Explore the best MSME products from the Land of a Thousand Gadang Houses. From authentic culinary delights to high-value handicrafts.',
+      subtitle: 'Digital MSME platform supporting Government Procurement (B2G) and local Farmer empowerment.',
       cta_buy: 'Shop Now',
-      cta_learn: 'Learn Our Culture'
+      cta_learn: 'Market Price Info'
     },
     products: {
       title: 'Featured Products',
-      subtitle: 'Discover high-quality local products made with love and dedication by South Solok MSME players.',
+      subtitle: 'Discover high-quality local products. Special filter for vendors ready for Mbizmarket/e-Catalog for Govt needs.',
       view_all: 'View All Products',
       filter_all: 'All',
       sold_by: 'Sold by',
       buy_wa: 'Buy via WA',
+      buy_b2b: 'Request Quote (B2B)',
       ai_marketing: 'AI Marketing Copy',
       ai_button_title: 'Generate description with AI',
       visit_profile: 'Visit Profile',
       share_product: 'Share',
-      share_success: 'Link copied!'
+      share_success: 'Link copied!',
+      mbiz_badge: 'Mbizmarket Ready',
+      min_order: 'Min. Order'
     },
     explore: {
       title: 'Explore South Solok',
@@ -197,10 +218,10 @@ const translations: Record<Language, Translations> = {
       source_map: 'Open in Maps'
     },
     features: {
-      f1_title: 'Authentic Local',
-      f1_desc: '100% Original products made by the people of South Solok.',
-      f2_title: 'Premium Quality',
-      f2_desc: 'Strictly curated to ensure customer satisfaction.',
+      f1_title: 'e-Catalog Ready',
+      f1_desc: 'Verified vendors with NIB & Tax ID for government procurement.',
+      f2_title: 'Direct from Farmers',
+      f2_desc: 'Cutting the supply chain, best prices directly from farmers.',
       f3_title: 'Support Economy',
       f3_desc: 'Every purchase helps the local economy.'
     },
@@ -211,8 +232,8 @@ const translations: Record<Language, Translations> = {
     },
     about: {
       title: 'About South Solok MSMEs',
-      p1: 'This platform is dedicated to uplifting the extraordinary potential of South Solok, "Nagari Saribu Rumah Gadang". We connect local artisans, farmers, and creators directly to the global market through technology.',
-      p2: 'With a touch of modern AI technology, we help business owners improve branding and reach more customers without leaving their cultural identity behind.'
+      p1: 'This platform is dedicated to uplifting the extraordinary potential of South Solok. We facilitate MSMEs to enter the digital ecosystem, including readiness for the Government market (Mbizmarket).',
+      p2: 'With market price information features, we also help farmers get fair price transparency.'
     },
     footer: {
       desc: 'The center for the best souvenirs and crafts from South Solok. Trusted, Reliable, and Quality.',
@@ -223,8 +244,8 @@ const translations: Record<Language, Translations> = {
     },
     assistant: {
       btn_label: 'Ask Business Assistant',
-      greeting: 'Hello! I am the South Solok MSME digital assistant. How can I help develop your business today?',
-      placeholder: 'Ask about marketing strategy, product ideas...',
+      greeting: 'Hello! I am the South Solok MSME digital assistant. Can I help with Mbizmarket requirements or pricing strategy?',
+      placeholder: 'Ask about NIB requirements, e-catalog...',
       thinking: 'Thinking...',
       header_title: 'Digital MSME Assistant'
     }

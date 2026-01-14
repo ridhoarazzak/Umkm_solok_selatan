@@ -12,9 +12,14 @@ export interface Product {
   image: string;
   owner: string;
   contactNumber?: string;
-  instagram?: string; // New: Username IG
-  facebook?: string;  // New: Username/Page FB
+  instagram?: string; 
+  facebook?: string;  
   variants?: Variant[];
+  // New Fields for Govt & Agri focus
+  isMbizReady?: boolean; // Vendor siap masuk e-Katalog/Mbiz
+  legalitas?: string[];  // NIB, PIRT, Halal
+  harvestDate?: string;  // Untuk produk pertanian (Freshness)
+  minOrder?: number;     // Minimum order untuk harga grosir
 }
 
 export interface BusinessTip {

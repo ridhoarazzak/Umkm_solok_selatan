@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, MessageCircle, CheckCircle2, ShoppingBag } from 'lucide-react';
+import { X, MessageCircle, CheckCircle2, ShoppingBag, Briefcase, FileText } from 'lucide-react';
 import { Product } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -10,7 +10,7 @@ interface ProductDetailModalProps {
 }
 
 export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, isOpen, onClose }) => {
-  const { language } = useLanguage();
+  const { t, language } = useLanguage();
 
   if (!isOpen || !product) return null;
 
@@ -19,6 +19,21 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
     const message = language === 'id'
       ? `Halo ${product.owner}, saya tertarik membeli "${product.name}" varian: *${variantName}* seharga Rp ${variantPrice.toLocaleString('id-ID')}. Apakah stok tersedia?`
       : `Hello ${product.owner}, I am interested in buying "${product.name}" variant: *${variantName}* for Rp ${variantPrice.toLocaleString('id-ID')}. Is it available?`;
+    
+    window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+  };
+
+  const handleB2BQuote = () => {
+    const phoneNumber = product.contactNumber || "6288267051392";
+    const message = `Yth. ${product.owner},
+
+Saya dari Dinas/Instansi [Sebutkan Nama Instansi] bermaksud meminta *Penawaran Resmi (Quotation)* untuk pengadaan:
+
+Produk: ${product.name}
+Kebutuhan: [Sebutkan Jumlah]
+Tujuan: Pengadaan Barang/Jasa
+
+Mohon info ketersediaan stok dan kelengkapan administrasi (Mbizmarket/NIB/Faktur). Terima kasih.`;
     
     window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
   };
@@ -34,8 +49,15 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
             alt={product.name} 
             className="w-full h-full object-cover"
           />
-          <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-gray-900">
-            {product.category}
+          <div className="absolute top-4 left-4 flex flex-col gap-2">
+            <span className="bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-gray-900">
+              {product.category}
+            </span>
+            {product.isMbizReady && (
+              <span className="bg-blue-600/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-white">
+                Mbiz Ready
+              </span>
+            )}
           </div>
         </div>
 
@@ -54,14 +76,38 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
             </button>
           </div>
 
-          <p className="text-gray-600 text-sm leading-relaxed mb-8">
+          <p className="text-gray-600 text-sm leading-relaxed mb-4">
             {product.description}
           </p>
 
+          {/* Legalitas Block for Govt */}
+          {product.legalitas && product.legalitas.length > 0 && (
+            <div className="mb-6 p-3 bg-blue-50 border border-blue-100 rounded-lg">
+              <h5 className="text-xs font-bold text-blue-800 uppercase tracking-wider mb-2 flex items-center gap-1">
+                <FileText size={12} /> Legalitas Usaha
+              </h5>
+              <div className="flex flex-wrap gap-2">
+                {product.legalitas.map((l, i) => (
+                  <span key={i} className="text-xs text-blue-700 font-medium px-2 py-1 bg-white rounded border border-blue-200">{l}</span>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div className="mt-auto">
+            {/* B2B / Govt Action */}
+            {product.isMbizReady && (
+              <button 
+                onClick={handleB2BQuote}
+                className="w-full mb-6 bg-blue-900 hover:bg-blue-800 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-md transition-all"
+              >
+                <Briefcase size={18} /> {t.products.buy_b2b}
+              </button>
+            )}
+
             <h4 className="font-bold text-gray-900 mb-4 flex items-center gap-2 border-b border-gray-100 pb-2">
               <CheckCircle2 size={18} className="text-solok-green" />
-              {language === 'id' ? 'Pilih Varian & Pesan' : 'Select Variant & Order'}
+              {language === 'id' ? 'Pilih Varian (Retail)' : 'Select Variant (Retail)'}
             </h4>
             
             <div className="space-y-3">
@@ -81,7 +127,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
                   </div>
                 ))
               ) : (
-                // Fallback if no variants (Single Product)
                 <div className="flex items-center justify-between p-4 rounded-xl border border-gray-100 bg-gray-50">
                   <div>
                     <p className="font-bold text-gray-900">Standar</p>

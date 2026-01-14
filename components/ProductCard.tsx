@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Product, GeminiStatus } from '../types';
 import { generateMarketingCopy } from '../services/geminiService';
-import { Wand2, Loader2, Heart, MessageCircle, BadgeCheck, ListFilter, Facebook, Instagram, Share2, Check } from 'lucide-react';
+import { Wand2, Loader2, Heart, MessageCircle, BadgeCheck, ListFilter, Facebook, Instagram, Share2, Check, Briefcase, Leaf } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 interface ProductCardProps {
@@ -27,11 +27,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetail 
   };
 
   const handleAction = () => {
-    // If product has variants and the handler is provided, open the modal
     if (product.variants && product.variants.length > 0 && onOpenDetail) {
       onOpenDetail(product);
     } else {
-      // Direct buy logic (Fallback)
       const phoneNumber = product.contactNumber || "6288267051392"; 
       const message = language === 'id' 
         ? `Halo ${product.owner}, saya melihat produk "${product.name}" di Web UMKM Solsel dan tertarik untuk membelinya. Apakah stok masih tersedia?`
@@ -54,7 +52,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetail 
         console.log('Error sharing', err);
       }
     } else {
-      // Fallback: Copy to clipboard
       navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`);
       setIsCopied(true);
       setTimeout(() => setIsCopied(false), 2000);
@@ -74,13 +71,21 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetail 
           alt={product.name} 
           className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
         />
-        <div className="absolute top-4 left-4">
+        
+        {/* Category Badge */}
+        <div className="absolute top-4 left-4 flex flex-col gap-2 items-start">
              <span className="bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-gray-900 shadow-sm border border-gray-100">
                 {product.category}
              </span>
+             {/* Mbiz Ready Badge */}
+             {product.isMbizReady && (
+               <span className="bg-blue-600/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-white shadow-md flex items-center gap-1">
+                  <Briefcase size={12} /> {t.products.mbiz_badge}
+               </span>
+             )}
         </div>
         
-        {/* Share Button overlaid on image */}
+        {/* Share Button */}
         <button 
           onClick={(e) => { e.stopPropagation(); handleShare(); }}
           className="absolute top-4 right-4 p-2.5 bg-white/90 backdrop-blur-md rounded-full text-gray-600 hover:text-solok-gold hover:bg-white transition-all shadow-sm transform hover:scale-110 z-20"
@@ -89,10 +94,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetail 
           {isCopied ? <Check size={20} className="text-green-600" /> : <Share2 size={20} />}
         </button>
         
-        {/* Verified Badge Overlay */}
-        <div className="absolute bottom-4 left-4 flex items-center gap-1.5 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20">
-           <BadgeCheck size={14} className="text-solok-gold" />
-           <p className="text-white text-xs font-medium">{product.owner}</p>
+        {/* Owner / Harvest Info */}
+        <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
+           <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20">
+              <BadgeCheck size={14} className="text-solok-gold" />
+              <p className="text-white text-xs font-medium">{product.owner}</p>
+           </div>
+           
+           {/* Harvest Date for Agri products */}
+           {product.harvestDate && (
+             <div className="flex items-center gap-1.5 bg-green-600/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20">
+               <Leaf size={14} className="text-white" />
+               <p className="text-white text-xs font-medium">Panen: {product.harvestDate}</p>
+             </div>
+           )}
         </div>
       </div>
 
@@ -104,16 +119,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetail 
            </h3>
         </div>
 
-        {/* Social Links Small */}
         <div className="flex gap-3 mb-4 text-xs text-gray-400">
           {product.instagram && (
             <a href={`https://instagram.com/${product.instagram}`} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:text-pink-600 transition-colors">
               <Instagram size={12} /> @{product.instagram}
-            </a>
-          )}
-          {product.facebook && (
-            <a href={`https://facebook.com/${product.facebook}`} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:text-blue-600 transition-colors">
-              <Facebook size={12} /> {product.facebook}
             </a>
           )}
         </div>
@@ -125,6 +134,17 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetail 
             `Rp ${product.price.toLocaleString('id-ID')}`
           )}
         </p>
+
+        {/* Legalitas Info (Govt requirement) */}
+        {product.legalitas && product.legalitas.length > 0 && (
+          <div className="mb-3 flex flex-wrap gap-1">
+             {product.legalitas.map((leg, i) => (
+               <span key={i} className="text-[10px] bg-gray-100 text-gray-600 px-2 py-0.5 rounded border border-gray-200">
+                 {leg}
+               </span>
+             ))}
+          </div>
+        )}
         
         <div className="flex-grow">
           <p className="text-gray-500 text-sm leading-relaxed mb-6 line-clamp-3">
@@ -132,7 +152,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetail 
           </p>
         </div>
 
-        {/* AI Feature Area */}
         {status === GeminiStatus.SUCCESS && (
            <div className="mb-5 p-4 bg-gradient-to-br from-indigo-50 to-white rounded-xl border border-indigo-100 shadow-inner animate-fade-in relative overflow-hidden">
              <div className="absolute top-0 right-0 w-16 h-16 bg-indigo-100 rounded-bl-full -mr-8 -mt-8 opacity-50"></div>
@@ -144,7 +163,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetail 
            </div>
         )}
 
-        {/* Action Buttons */}
         <div className="flex gap-3 pt-4 border-t border-gray-50 mt-auto">
           <button 
             onClick={handleAction}
