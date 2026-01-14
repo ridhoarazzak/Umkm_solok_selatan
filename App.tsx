@@ -6,7 +6,7 @@ import { BusinessAssistant } from './components/BusinessAssistant';
 import { Toast, ToastType } from './components/Toast';
 import { RegisterModal } from './components/RegisterModal';
 import { Product, PlaceResult, GeminiStatus } from './types';
-import { MapPin, Phone, Instagram, Facebook, Search, Map, Loader2, ArrowUpRight, AlertCircle, PlusCircle, ChevronDown, WifiOff, Navigation } from 'lucide-react';
+import { MapPin, Phone, Instagram, Facebook, Search, Map, Loader2, ArrowUpRight, AlertCircle, PlusCircle, ChevronDown, WifiOff, Navigation, Layers } from 'lucide-react';
 import { useLanguage } from './contexts/LanguageContext';
 import { searchPlacesInSolok } from './services/geminiService';
 import ReactMarkdown from 'react-markdown';
@@ -189,6 +189,7 @@ const App: React.FC = () => {
 
   // Search Logic
   const [searchQuery, setSearchQuery] = useState('');
+  const [lastSearchedQuery, setLastSearchedQuery] = useState('');
   const [searchStatus, setSearchStatus] = useState<GeminiStatus>(GeminiStatus.IDLE);
   const [searchResult, setSearchResult] = useState<PlaceResult | null>(null);
   
@@ -207,6 +208,7 @@ const App: React.FC = () => {
     
     setSearchStatus(GeminiStatus.LOADING);
     setSearchResult(null);
+    setLastSearchedQuery(query); // Save the query for the map embed
     showToast('Sedang mencari lokasi...', 'info');
 
     try {
@@ -358,12 +360,35 @@ const App: React.FC = () => {
                   <ReactMarkdown>{searchResult.text}</ReactMarkdown>
                 </div>
 
+                {/* --- GOOGLE MAPS EMBED --- */}
+                {/* Visual map iframe based on search query */}
+                <div className="mb-8 bg-gray-50 rounded-xl p-2 border border-gray-200">
+                  <div className="flex items-center gap-2 mb-3 px-2 pt-2">
+                    <Layers size={18} className="text-solok-gold" />
+                    <h4 className="font-bold text-gray-700">Peta Digital: {lastSearchedQuery}</h4>
+                  </div>
+                  <div className="w-full h-80 rounded-lg overflow-hidden relative bg-gray-200 shadow-inner">
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      frameBorder="0"
+                      scrolling="no"
+                      marginHeight={0}
+                      marginWidth={0}
+                      src={`https://maps.google.com/maps?q=${encodeURIComponent(lastSearchedQuery + " Solok Selatan")}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
+                      title="Google Maps Embed"
+                      className="absolute inset-0"
+                    ></iframe>
+                  </div>
+                </div>
+                {/* ------------------------- */}
+
                 {/* Grounding Source Links (Kartu Lokasi Elegan) */}
                 {searchResult.sourceLinks.length > 0 && (
                   <div>
                     <h4 className="font-bold text-gray-700 mb-4 flex items-center gap-2">
                       <Navigation size={18} className="text-solok-red" />
-                      Lokasi Terkait:
+                      Detail Lokasi:
                     </h4>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       {searchResult.sourceLinks.map((link, idx) => (
@@ -387,7 +412,7 @@ const App: React.FC = () => {
                             {link.title}
                           </span>
                           <span className="text-xs text-gray-500 mt-1 relative z-10">
-                            Klik untuk buka di Google Maps
+                            Klik untuk navigasi
                           </span>
                         </a>
                       ))}
