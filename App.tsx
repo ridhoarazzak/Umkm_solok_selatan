@@ -4,7 +4,7 @@ import { Hero } from './components/Hero';
 import { ProductCard } from './components/ProductCard';
 import { BusinessAssistant } from './components/BusinessAssistant';
 import { Product, PlaceResult, GeminiStatus } from './types';
-import { MapPin, Phone, Instagram, Facebook, Search, Map, Loader2, ArrowUpRight } from 'lucide-react';
+import { MapPin, Phone, Instagram, Facebook, Search, Map, Loader2, ArrowUpRight, AlertCircle } from 'lucide-react';
 import { useLanguage } from './contexts/LanguageContext';
 import { searchPlacesInSolok } from './services/geminiService';
 import ReactMarkdown from 'react-markdown';
@@ -147,6 +147,7 @@ const App: React.FC = () => {
   const [searchResult, setSearchResult] = useState<PlaceResult | null>(null);
 
   const handleSearch = async (query: string) => {
+    if (!query.trim()) return;
     setSearchStatus(GeminiStatus.LOADING);
     setSearchResult(null);
     try {
@@ -236,6 +237,17 @@ const App: React.FC = () => {
                 ))}
               </div>
             </div>
+
+            {/* Error State */}
+            {searchStatus === GeminiStatus.ERROR && (
+              <div className="bg-red-500/10 border border-red-500/50 rounded-xl p-4 text-center animate-fade-in-up">
+                <div className="flex items-center justify-center gap-2 text-red-400 mb-1">
+                  <AlertCircle size={20} />
+                  <span className="font-bold">Gagal memuat data</span>
+                </div>
+                <p className="text-sm text-red-300">Terjadi kesalahan saat menghubungi Google Maps. Silakan coba lagi nanti.</p>
+              </div>
+            )}
 
             {/* Results Area */}
             {searchResult && (

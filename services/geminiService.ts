@@ -70,18 +70,25 @@ export const searchPlacesInSolok = async (categoryOrQuery: string): Promise<Plac
       Berikan deskripsi singkat kenapa tempat itu menarik.`,
       config: {
         tools: [{ googleMaps: {} }],
-        // Provide tool config with retrieval config if needed, but for general queries it's optional
       },
     });
 
     // Extract grounding chunks for Maps URLs
     const chunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
+    
+    // Robustly extract links from various potential chunk types (web or maps)
     const sourceLinks = chunks
-      .filter((chunk: any) => chunk.web?.uri || chunk.web?.title) // Maps grounding often returns as web/maps type chunks
-      .map((chunk: any) => ({
-        title: chunk.web?.title || "Lihat di Peta",
-        uri: chunk.web?.uri || "#"
-      }));
+      .map((chunk: any) => {
+        if (chunk.web) {
+          return { title: chunk.web.title || "Link Web", uri: chunk.web.uri };
+        }
+        if (chunk.maps) {
+           // Maps chunks often contain the direct Google Maps URI
+           return { title: chunk.maps.title || "Lihat di Google Maps", uri: chunk.maps.sourceUri || chunk.maps.uri };
+        }
+        return null;
+      })
+      .filter((link: any) => link !== null && link.uri);
 
     return {
       text: response.text || "Tidak ditemukan data.",
@@ -90,6 +97,6 @@ export const searchPlacesInSolok = async (categoryOrQuery: string): Promise<Plac
 
   } catch (error) {
     console.error("Gemini Maps Error:", error);
-    throw new Error("Gagal mencari lokasi.");
+    throw new Error("Gagal mencari lokasi. Pastikan API Key valid.");
   }
 };
