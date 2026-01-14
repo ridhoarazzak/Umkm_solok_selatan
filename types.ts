@@ -1,3 +1,8 @@
+export interface Variant {
+  name: string;
+  price: number;
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -7,6 +12,7 @@ export interface Product {
   image: string;
   owner: string;
   contactNumber?: string;
+  variants?: Variant[]; // Optional array for product variants
 }
 
 export interface BusinessTip {

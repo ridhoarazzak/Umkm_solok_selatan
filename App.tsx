@@ -5,23 +5,31 @@ import { ProductCard } from './components/ProductCard';
 import { BusinessAssistant } from './components/BusinessAssistant';
 import { Toast, ToastType } from './components/Toast';
 import { RegisterModal } from './components/RegisterModal';
+import { ProductDetailModal } from './components/ProductDetailModal';
 import { Product, PlaceResult, GeminiStatus } from './types';
 import { MapPin, Phone, Instagram, Facebook, Search, Map, Loader2, ArrowUpRight, AlertCircle, PlusCircle, ChevronDown, WifiOff, Navigation, Layers } from 'lucide-react';
 import { useLanguage } from './contexts/LanguageContext';
 import { searchPlacesInSolok } from './services/geminiService';
 import ReactMarkdown from 'react-markdown';
 
-// DATA DUMMY: Perhatikan 'contactNumber' sekarang berbeda-beda untuk setiap penjual.
+// DATA DUMMY: Diupdate dengan varian kopi
 const PRODUCTS_ID: Product[] = [
   {
     id: '1',
-    name: 'Kopi Arabika Solok Selatan',
+    name: 'Aneka Kopi Solok Selatan', // Nama diubah lebih umum
     category: 'Kuliner',
     price: 85000,
-    description: 'Kopi Arabika premium yang dipetik dari dataran tinggi Solok Selatan. Memiliki cita rasa fruity dengan aroma rempah yang khas.',
+    description: 'Koleksi biji kopi terbaik dari dataran tinggi Solok Selatan. Tersedia berbagai varietas unggulan dengan cita rasa khas pegunungan Kerinci.',
     image: 'https://picsum.photos/400/300?random=1',
     owner: 'Koperasi Tani Maju',
-    contactNumber: '6281234567890' // Nomor Pemilik Koperasi
+    contactNumber: '6281234567890',
+    variants: [
+      { name: 'Arabica Full Wash (250g)', price: 95000 },
+      { name: 'Arabica Honey Process (250g)', price: 110000 },
+      { name: 'Robusta Premium (250g)', price: 65000 },
+      { name: 'Wine Coffee Fermented (200g)', price: 150000 },
+      { name: 'Peaberry / Kopi Lanang (200g)', price: 125000 }
+    ]
   },
   {
     id: '2',
@@ -31,7 +39,12 @@ const PRODUCTS_ID: Product[] = [
     description: 'Songket tenunan tangan asli dengan benang emas berkualitas tinggi. Motif klasik yang melambangkan kemewahan adat Minangkabau.',
     image: 'https://picsum.photos/400/300?random=2',
     owner: 'Butik Bunda Minang',
-    contactNumber: '6281987654321' // Nomor Butik Bunda
+    contactNumber: '6281987654321',
+    variants: [
+      { name: 'Motif Pucuk Rebung (Gold)', price: 1250000 },
+      { name: 'Motif Pucuk Rebung (Silver)', price: 1150000 },
+      { name: 'Selendang Saja', price: 450000 }
+    ]
   },
   {
     id: '3',
@@ -41,7 +54,12 @@ const PRODUCTS_ID: Product[] = [
     description: 'Rendang sapi asli yang dimasak dengan kayu bakar selama 8 jam. Tahan lama dan praktis untuk dibawa sebagai oleh-oleh.',
     image: 'https://picsum.photos/400/300?random=3',
     owner: 'Dapur Uni Emi',
-    contactNumber: '6281122334455' // Nomor Uni Emi
+    contactNumber: '6281122334455',
+    variants: [
+        { name: 'Kemasan 250g', price: 65000 },
+        { name: 'Kemasan 500g', price: 125000 },
+        { name: 'Kemasan 1kg', price: 240000 }
+    ]
   },
   {
     id: '4',
@@ -51,7 +69,7 @@ const PRODUCTS_ID: Product[] = [
     description: 'Keripik singkong renyah dengan balutan bumbu balado pedas manis yang menggugah selera.',
     image: 'https://picsum.photos/400/300?random=4',
     owner: 'Snack Minang Raya',
-    contactNumber: '6285566778899' // Nomor Snack Minang
+    contactNumber: '6285566778899'
   },
   {
     id: '5',
@@ -95,29 +113,40 @@ const PRODUCTS_ID: Product[] = [
   },
 ];
 
-// Mock Data EN (Nomor sama dengan ID)
 const PRODUCTS_EN: Product[] = [
   {
     id: '1',
-    name: 'South Solok Arabica Coffee',
+    name: 'South Solok Coffee Collection',
     category: 'Culinary',
     price: 85000,
-    description: 'Premium Arabica coffee harvested from the highlands of South Solok. Features a fruity taste with a distinctive spice aroma.',
+    description: 'Best collection of coffee beans from South Solok highlands. Various premium varieties available.',
     image: 'https://picsum.photos/400/300?random=1',
     owner: 'Maju Farmers Coop',
-    contactNumber: '6281234567890'
+    contactNumber: '6281234567890',
+    variants: [
+      { name: 'Arabica Full Wash (250g)', price: 95000 },
+      { name: 'Arabica Honey Process (250g)', price: 110000 },
+      { name: 'Robusta Premium (250g)', price: 65000 },
+      { name: 'Wine Coffee Fermented (200g)', price: 150000 },
+      { name: 'Peaberry (200g)', price: 125000 }
+    ]
   },
   {
     id: '2',
     name: 'Pandai Sikek Songket Fabric',
     category: 'Fashion',
     price: 1250000,
-    description: 'Authentic hand-woven Songket with high-quality gold threads. Classic motifs symbolizing the luxury of Minangkabau customs.',
+    description: 'Authentic hand-woven Songket with high-quality gold threads.',
     image: 'https://picsum.photos/400/300?random=2',
     owner: 'Bunda Minang Boutique',
-    contactNumber: '6281987654321'
+    contactNumber: '6281987654321',
+    variants: [
+      { name: 'Bamboo Shoot Motif (Gold)', price: 1250000 },
+      { name: 'Bamboo Shoot Motif (Silver)', price: 1150000 },
+      { name: 'Shawl Only', price: 450000 }
+    ]
   },
-  {
+   {
     id: '3',
     name: 'Packaged Beef Rendang',
     category: 'Culinary',
@@ -125,8 +154,14 @@ const PRODUCTS_EN: Product[] = [
     description: 'Authentic beef rendang cooked with firewood for 8 hours. Durable and practical to bring as a souvenir.',
     image: 'https://picsum.photos/400/300?random=3',
     owner: 'Uni Emi Kitchen',
-    contactNumber: '6281122334455'
+    contactNumber: '6281122334455',
+    variants: [
+        { name: 'Pack 250g', price: 65000 },
+        { name: 'Pack 500g', price: 125000 },
+        { name: 'Pack 1kg', price: 240000 }
+    ]
   },
+  // ... rest same without variants for simplicity, or add if needed
   {
     id: '4',
     name: 'Sanjai Balado Chips',
@@ -196,8 +231,9 @@ const App: React.FC = () => {
   // Toast Notification State
   const [toast, setToast] = useState<{msg: string, type: ToastType, show: boolean}>({msg: '', type: 'info', show: false});
 
-  // Register Modal State
+  // Modal States
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   const showToast = (msg: string, type: ToastType) => {
     setToast({ msg, type, show: true });
@@ -238,7 +274,14 @@ const App: React.FC = () => {
         onClose={() => setToast({...toast, show: false})} 
       />
 
+      {/* Modals */}
       <RegisterModal isOpen={isRegisterOpen} onClose={() => setIsRegisterOpen(false)} />
+      
+      <ProductDetailModal 
+        product={selectedProduct} 
+        isOpen={!!selectedProduct} 
+        onClose={() => setSelectedProduct(null)} 
+      />
 
       {/* Product Section - Refined for Global Standard */}
       <section id="produk" className="py-24 container mx-auto px-6 relative">
@@ -268,7 +311,11 @@ const App: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {displayedProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard 
+              key={product.id} 
+              product={product} 
+              onOpenDetail={(p) => setSelectedProduct(p)}
+            />
           ))}
         </div>
 
