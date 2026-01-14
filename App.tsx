@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { ProductCard } from './components/ProductCard';
@@ -12,7 +12,7 @@ import { useLanguage } from './contexts/LanguageContext';
 import { searchPlacesInSolok } from './services/geminiService';
 import ReactMarkdown from 'react-markdown';
 
-// --- DATA 10 UMKM SOLOK SELATAN (CURATED MOCKUP) ---
+// --- DATA 10 UMKM SOLOK SELATAN (CURATED MOCKUP) - INDONESIA ---
 
 const PRODUCTS_ID: Product[] = [
   // 1. KOPI (Padang Aro)
@@ -178,13 +178,172 @@ const PRODUCTS_ID: Product[] = [
   }
 ];
 
-// --- MAPPING DATA BAHASA INGGRIS (Disederhanakan untuk Demo) ---
-const PRODUCTS_EN: Product[] = PRODUCTS_ID.map(p => ({
-  ...p,
-  name: p.name + " (Export Quality)",
-  description: p.description + " (Authentic product from South Solok, West Sumatra).",
-  price: p.price
-}));
+// --- DATA 10 SOUTH SOLOK MSME (TRANSLATED MOCKUP) - ENGLISH ---
+
+const PRODUCTS_EN: Product[] = [
+  // 1. COFFEE
+  {
+    id: 'umkm-1',
+    name: '"Golden Solsel" Arabica Coffee',
+    category: 'Beverages',
+    price: 95000,
+    description: 'Single origin Arabica coffee beans from Padang Aro highlands (1,400 masl). Perfectly red-picked, producing strong Caramel and Chocolate flavor notes.',
+    image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&q=80&w=800',
+    owner: 'Kopi Alam Surambi',
+    contactNumber: '6281234567890',
+    variants: [
+      { name: 'Roasted Bean (250g)', price: 95000 },
+      { name: 'Ground Coffee (250g)', price: 95000 },
+      { name: 'Drip Bag (Box of 10)', price: 85000 },
+      { name: 'Green Bean (1kg)', price: 150000 }
+    ]
+  },
+  // 2. RENDANG
+  {
+    id: 'umkm-2',
+    name: '"Uni Emi" Crispy Beef Lung Rendang',
+    category: 'Food',
+    price: 75000,
+    description: 'Beef lung rendang cooked dry (crispy). Lasts up to 3 months without preservatives. Cooked using authentic South Solok cinnamon.',
+    image: 'https://images.unsplash.com/photo-1603083569762-b9e76100914c?auto=format&fit=crop&q=80&w=800',
+    owner: 'Dapur Minang Asli',
+    contactNumber: '6281122334455',
+    variants: [
+        { name: 'Crispy Lung (250g)', price: 75000 },
+        { name: 'Wet Beef Rendang (500g)', price: 160000 },
+        { name: 'Eel Rendang (250g)', price: 85000 }
+    ]
+  },
+  // 3. SONGKET
+  {
+    id: 'umkm-3',
+    name: 'Hand-loomed Songket (ATBM)',
+    category: 'Fashion',
+    price: 2500000,
+    description: 'Exclusive hand-woven fabric with Bamboo Shoot motif using imported crystal gold threads. Manually crafted for 1 month by senior artisans.',
+    image: 'https://images.unsplash.com/photo-1544967082-d9d3f661eb10?auto=format&fit=crop&q=80&w=800',
+    owner: 'Galeri Tenun Bundo',
+    contactNumber: '6281987654321',
+    variants: [
+      { name: 'Full Set (Cloth + Shawl)', price: 2500000 },
+      { name: 'Sarong Only', price: 1800000 },
+      { name: 'Shawl Only', price: 850000 }
+    ]
+  },
+  // 4. SNACKS
+  {
+    id: 'umkm-4',
+    name: 'Sultan\'s Sanjai Balado Chips',
+    category: 'Snacks',
+    price: 30000,
+    description: 'Thinly sliced cassava chips with abundant spicy caramel seasoning. The perfect balance of spicy and sweet, simply addictive.',
+    image: 'https://images.unsplash.com/photo-1566453837860-637cc97c9ee3?auto=format&fit=crop&q=80&w=800',
+    owner: 'Snack Rumah Gadang',
+    contactNumber: '6285566778899',
+    variants: [
+      { name: 'Red Balado (250g)', price: 30000 },
+      { name: 'Red Balado (500g)', price: 55000 },
+      { name: 'Original Salty (250g)', price: 25000 }
+    ]
+  },
+  // 5. CRAFTS
+  {
+    id: 'umkm-5',
+    name: 'Surian Wood Rumah Gadang Miniature',
+    category: 'Crafts',
+    price: 450000,
+    description: 'Authentic desk decoration shaped like a Gadang House. Made from high-quality Surian wood waste with hand-carved details.',
+    image: 'https://images.unsplash.com/photo-1505374830113-5853234d748f?auto=format&fit=crop&q=80&w=800',
+    owner: 'Solsel Craft Center',
+    contactNumber: '6289988776655',
+    variants: [
+      { name: 'Size S (15x10cm)', price: 450000 },
+      { name: 'Size M (30x20cm)', price: 850000 },
+      { name: 'Size L (Custom + Glass)', price: 1500000 }
+    ]
+  },
+  // 6. TEA
+  {
+    id: 'umkm-6',
+    name: 'Premium Grade A Black Tea',
+    category: 'Beverages',
+    price: 50000,
+    description: 'Orthodox black tea processed from selected pecco shoots. Has a clear copper-red brew color and a robust astringent taste.',
+    image: 'https://images.unsplash.com/photo-1576092768241-dec231844f74?auto=format&fit=crop&q=80&w=800',
+    owner: 'Mitra Teh Liki',
+    contactNumber: '628123123123',
+    variants: [
+      { name: 'Pouch (100g)', price: 50000 },
+      { name: 'Tin Can (100g)', price: 85000 },
+      { name: 'Tea Bags (25 pcs)', price: 40000 }
+    ]
+  },
+  // 7. BATIK
+  {
+    id: 'umkm-7',
+    name: 'Clay Batik (Batik Tanah Liek)',
+    category: 'Fashion',
+    price: 375000,
+    description: 'Typical Minangkabau hand-drawn batik where the base coloring uses clay (tanah liek). Very elegant earth tone colors.',
+    image: 'https://images.unsplash.com/photo-1526417502920-5c68f44d1544?auto=format&fit=crop&q=80&w=800',
+    owner: 'Sanggar Batik Nagari',
+    contactNumber: '6287711223344',
+    variants: [
+      { name: 'Cotton Fabric (2m)', price: 375000 },
+      { name: 'Silk Fabric (2m)', price: 1200000 },
+      { name: 'Scarf', price: 150000 }
+    ]
+  },
+  // 8. TRADITIONAL FOOD
+  {
+    id: 'umkm-8',
+    name: 'Green Chili Smashed Beef (Dendeng)',
+    category: 'Food',
+    price: 90000,
+    description: 'Selected beef grilled and smashed until fibers break, doused with fresh green chili sambal and pure coconut oil.',
+    image: 'https://images.unsplash.com/photo-1574484284008-86d47dc648d3?auto=format&fit=crop&q=80&w=800',
+    owner: 'RM Salero Kampuang',
+    contactNumber: '6285566778811',
+    variants: [
+      { name: 'Frozen Pack (250g)', price: 90000 },
+      { name: 'Frozen Pack (500g)', price: 175000 },
+      { name: 'Ready to Eat (Box)', price: 95000 }
+    ]
+  },
+  // 9. SWEETS
+  {
+    id: 'umkm-9',
+    name: 'Authentic Palm Sugar Galamai',
+    category: 'Snacks',
+    price: 40000,
+    description: 'Traditional dodol (Galamai) cooked for 6 hours in an iron wok. Chewy texture, non-sticky, with authentic sweet palm sugar.',
+    image: 'https://images.unsplash.com/photo-1606312619070-d48b4c652a52?auto=format&fit=crop&q=80&w=800',
+    owner: 'Galamai Uni Des',
+    contactNumber: '628555444333',
+    variants: [
+      { name: 'Original (Pack 500g)', price: 40000 },
+      { name: 'Sesame (Pack 500g)', price: 45000 },
+      { name: 'Durian (Pack 500g)', price: 60000 }
+    ]
+  },
+  // 10. CRAFTS
+  {
+    id: 'umkm-10',
+    name: 'Ethnic Pandan Woven Bag',
+    category: 'Crafts',
+    price: 125000,
+    description: 'Woven pandan leaf bag combined with synthetic leather. Modern design suitable for parties or casual outings.',
+    image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=800',
+    owner: 'Kreatif Mandiri Solsel',
+    contactNumber: '628777888999',
+    variants: [
+      { name: 'Tote Bag Medium', price: 125000 },
+      { name: 'Sling Bag', price: 95000 },
+      { name: 'Party Clutch', price: 85000 }
+    ]
+  }
+];
+
 
 // --- MAIN APP COMPONENT ---
 
@@ -195,13 +354,20 @@ const App: React.FC = () => {
   const rawProducts = language === 'id' ? PRODUCTS_ID : PRODUCTS_EN; 
   
   // State Filter Kategori
-  const [selectedCategory, setSelectedCategory] = useState<string>('Semua');
+  // Initialize with translated "All" to avoid mismatch on load/change
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+
+  // Reset/Update filter when language changes
+  useEffect(() => {
+    setSelectedCategory(t.products.filter_all);
+  }, [language, t.products.filter_all]);
   
   // Ambil list kategori unik
-  const categories = ['Semua', ...Array.from(new Set(rawProducts.map(p => p.category)))];
+  // Use translated "All" as the first option
+  const categories = [t.products.filter_all, ...Array.from(new Set(rawProducts.map(p => p.category)))];
 
   // Filter produk
-  const filteredProducts = selectedCategory === 'Semua' 
+  const filteredProducts = selectedCategory === t.products.filter_all
     ? rawProducts 
     : rawProducts.filter(p => p.category === selectedCategory);
 

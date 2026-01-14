@@ -23,6 +23,7 @@ interface Translations {
     title: string;
     subtitle: string;
     view_all: string;
+    filter_all: string;
     sold_by: string;
     buy_wa: string;
     ai_marketing: string;
@@ -91,6 +92,7 @@ const translations: Record<Language, Translations> = {
       title: 'Produk Unggulan',
       subtitle: 'Temukan produk-produk lokal berkualitas tinggi yang dibuat dengan cinta dan dedikasi oleh para pelaku UMKM Solok Selatan.',
       view_all: 'Lihat Semua Produk',
+      filter_all: 'Semua',
       sold_by: 'Dijual oleh',
       buy_wa: 'Beli via WA',
       ai_marketing: 'Copy Marketing AI',
@@ -157,6 +159,7 @@ const translations: Record<Language, Translations> = {
       title: 'Featured Products',
       subtitle: 'Discover high-quality local products made with love and dedication by South Solok MSME players.',
       view_all: 'View All Products',
+      filter_all: 'All',
       sold_by: 'Sold by',
       buy_wa: 'Buy via WA',
       ai_marketing: 'AI Marketing Copy',
