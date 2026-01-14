@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Product, GeminiStatus } from '../types';
 import { generateMarketingCopy } from '../services/geminiService';
 import { ShoppingCart, Wand2, Loader2, Heart, MessageCircle } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface ProductCardProps {
   product: Product;
@@ -10,6 +11,7 @@ interface ProductCardProps {
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [aiDescription, setAiDescription] = useState<string | null>(null);
   const [status, setStatus] = useState<GeminiStatus>(GeminiStatus.IDLE);
+  const { t, language } = useLanguage();
 
   const handleGenerateDescription = async () => {
     setStatus(GeminiStatus.LOADING);
@@ -23,8 +25,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   };
 
   const handleBuy = () => {
-    const phoneNumber = product.contactNumber || "6288267051392"; // Fallback number
-    const message = `Halo ${product.owner}, saya tertarik untuk membeli produk "${product.name}" yang ada di Aplikasi UMKM Solok Selatan. Apakah stok masih tersedia?`;
+    const phoneNumber = product.contactNumber || "6288267051392"; 
+    const message = language === 'id' 
+      ? `Halo ${product.owner}, saya tertarik untuk membeli produk "${product.name}". Apakah stok masih tersedia?`
+      : `Hello ${product.owner}, I am interested in buying "${product.name}". Is it still available?`;
+      
     window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
@@ -40,7 +45,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <Heart size={18} />
         </button>
         <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-           <p className="text-white text-xs font-medium">Dijual oleh: {product.owner}</p>
+           <p className="text-white text-xs font-medium">{t.products.sold_by}: {product.owner}</p>
         </div>
       </div>
 
@@ -63,7 +68,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
            <div className="mb-4 p-3 bg-indigo-50 rounded-lg border border-indigo-100 animate-fade-in">
              <div className="flex items-center gap-2 mb-1">
                <Wand2 size={12} className="text-indigo-600" />
-               <span className="text-xs font-bold text-indigo-700">AI Marketing Copy</span>
+               <span className="text-xs font-bold text-indigo-700">{t.products.ai_marketing}</span>
              </div>
              <p className="text-xs text-indigo-800 italic">"{aiDescription}"</p>
            </div>
@@ -74,14 +79,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             onClick={handleBuy}
             className="flex-1 bg-gray-900 text-white py-2.5 rounded-lg text-sm font-semibold hover:bg-green-600 transition-colors flex justify-center items-center gap-2"
           >
-            <MessageCircle size={18} /> Beli via WA
+            <MessageCircle size={18} /> {t.products.buy_wa}
           </button>
           
           <button 
             onClick={handleGenerateDescription}
             disabled={status === GeminiStatus.LOADING}
             className="px-3 py-2.5 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-100 transition-colors border border-indigo-200"
-            title="Buat deskripsi menarik dengan AI"
+            title={t.products.ai_button_title}
           >
             {status === GeminiStatus.LOADING ? <Loader2 size={18} className="animate-spin" /> : <Wand2 size={18} />}
           </button>

@@ -2,21 +2,29 @@ import React, { useState, useRef, useEffect } from 'react';
 import { askBusinessAdvisor } from '../services/geminiService';
 import { MessageSquare, Send, X, Bot, User, Loader2 } from 'lucide-react';
 import { GeminiStatus } from '../types';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export const BusinessAssistant: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<{role: 'user' | 'bot', text: string}[]>([
-    {role: 'bot', text: 'Halo! Saya asisten digital UMKM Solok Selatan. Ada yang bisa saya bantu untuk mengembangkan usaha Anda hari ini?'}
-  ]);
+  const { t, language } = useLanguage();
+  
+  const [messages, setMessages] = useState<{role: 'user' | 'bot', text: string}[]>([]);
   const [input, setInput] = useState('');
   const [status, setStatus] = useState<GeminiStatus>(GeminiStatus.IDLE);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Update greeting when language changes or first load
+  useEffect(() => {
+    if (messages.length === 0 || (messages.length === 1 && messages[0].role === 'bot')) {
+        setMessages([{role: 'bot', text: t.assistant.greeting}]);
+    }
+  }, [language, t.assistant.greeting]);
 
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages, isOpen]);
 
   const handleSend = async () => {
     if (!input.trim()) return;
@@ -39,7 +47,7 @@ export const BusinessAssistant: React.FC = () => {
         className={`fixed bottom-6 right-6 z-40 bg-solok-green text-white p-4 rounded-full shadow-2xl hover:bg-green-800 transition-all transform hover:scale-110 flex items-center gap-2 ${isOpen ? 'hidden' : 'flex'}`}
       >
         <MessageSquare size={24} />
-        <span className="font-semibold text-sm hidden md:inline">Tanya Asisten Bisnis</span>
+        <span className="font-semibold text-sm hidden md:inline">{t.assistant.btn_label}</span>
       </button>
 
       {isOpen && (
@@ -51,7 +59,7 @@ export const BusinessAssistant: React.FC = () => {
                 <Bot size={20} />
               </div>
               <div>
-                <h3 className="font-bold text-sm">Asisten UMKM Digital</h3>
+                <h3 className="font-bold text-sm">{t.assistant.header_title}</h3>
                 <p className="text-[10px] text-green-100">Powered by Gemini AI</p>
               </div>
             </div>
@@ -77,7 +85,7 @@ export const BusinessAssistant: React.FC = () => {
               <div className="flex justify-start">
                 <div className="bg-white border border-gray-200 rounded-2xl rounded-tl-none p-3 shadow-sm flex items-center gap-2">
                   <Loader2 size={16} className="animate-spin text-solok-green" />
-                  <span className="text-xs text-gray-500">Sedang berpikir...</span>
+                  <span className="text-xs text-gray-500">{t.assistant.thinking}</span>
                 </div>
               </div>
             )}
@@ -91,7 +99,7 @@ export const BusinessAssistant: React.FC = () => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                placeholder="Tanya strategi pemasaran, ide produk..."
+                placeholder={t.assistant.placeholder}
                 className="flex-grow border border-gray-200 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-solok-green focus:ring-1 focus:ring-solok-green"
               />
               <button 

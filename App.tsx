@@ -5,9 +5,10 @@ import { ProductCard } from './components/ProductCard';
 import { BusinessAssistant } from './components/BusinessAssistant';
 import { Product } from './types';
 import { MapPin, Phone, Instagram, Facebook } from 'lucide-react';
+import { useLanguage } from './contexts/LanguageContext';
 
-// Mock Data
-const PRODUCTS: Product[] = [
+// Mock Data ID
+const PRODUCTS_ID: Product[] = [
   {
     id: '1',
     name: 'Kopi Arabika Solok Selatan',
@@ -70,7 +71,74 @@ const PRODUCTS: Product[] = [
   },
 ];
 
+// Mock Data EN
+const PRODUCTS_EN: Product[] = [
+  {
+    id: '1',
+    name: 'South Solok Arabica Coffee',
+    category: 'Culinary',
+    price: 85000,
+    description: 'Premium Arabica coffee harvested from the highlands of South Solok. Features a fruity taste with a distinctive spice aroma.',
+    image: 'https://picsum.photos/400/300?random=1',
+    owner: 'Maju Farmers Coop',
+    contactNumber: '6288267051392'
+  },
+  {
+    id: '2',
+    name: 'Pandai Sikek Songket Fabric',
+    category: 'Fashion',
+    price: 1250000,
+    description: 'Authentic hand-woven Songket with high-quality gold threads. Classic motifs symbolizing the luxury of Minangkabau customs.',
+    image: 'https://picsum.photos/400/300?random=2',
+    owner: 'Bunda Minang Boutique',
+    contactNumber: '6288267051392'
+  },
+  {
+    id: '3',
+    name: 'Packaged Beef Rendang',
+    category: 'Culinary',
+    price: 65000,
+    description: 'Authentic beef rendang cooked with firewood for 8 hours. Durable and practical to bring as a souvenir.',
+    image: 'https://picsum.photos/400/300?random=3',
+    owner: 'Uni Emi Kitchen',
+    contactNumber: '6288267051392'
+  },
+  {
+    id: '4',
+    name: 'Sanjai Balado Chips',
+    category: 'Snacks',
+    price: 25000,
+    description: 'Crispy cassava chips coated with a spicy-sweet Balado seasoning that arouses the appetite.',
+    image: 'https://picsum.photos/400/300?random=4',
+    owner: 'Minang Raya Snack',
+    contactNumber: '6288267051392'
+  },
+  {
+    id: '5',
+    name: 'Rumah Gadang Souvenir',
+    category: 'Crafts',
+    price: 150000,
+    description: 'Miniature Rumah Gadang made of high-quality wood. Perfect for table decoration or a special gift.',
+    image: 'https://picsum.photos/400/300?random=5',
+    owner: 'Art Solsel',
+    contactNumber: '6288267051392'
+  },
+  {
+    id: '6',
+    name: 'Kayu Aro Premium Tea',
+    category: 'Beverage',
+    price: 45000,
+    description: 'Export quality black tea from the oldest tea plantation in Sumatra. Strong taste and calming.',
+    image: 'https://picsum.photos/400/300?random=6',
+    owner: 'Nusantara Tea',
+    contactNumber: '6288267051392'
+  },
+];
+
 const App: React.FC = () => {
+  const { t, language } = useLanguage();
+  const displayedProducts = language === 'id' ? PRODUCTS_ID : PRODUCTS_EN;
+
   return (
     <div className="min-h-screen bg-slate-50">
       <Navbar />
@@ -80,23 +148,23 @@ const App: React.FC = () => {
       <section id="produk" className="py-20 container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-4">
-            Produk Unggulan
+            {t.products.title}
           </h2>
           <div className="w-24 h-1 bg-solok-gold mx-auto mb-6"></div>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Temukan produk-produk lokal berkualitas tinggi yang dibuat dengan cinta dan dedikasi oleh para pelaku UMKM Solok Selatan.
+            {t.products.subtitle}
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {PRODUCTS.map((product) => (
+          {displayedProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
 
         <div className="mt-16 text-center">
           <button className="border-2 border-gray-900 text-gray-900 px-8 py-3 rounded-full font-semibold hover:bg-gray-900 hover:text-white transition-all duration-300">
-            Lihat Semua Produk
+            {t.products.view_all}
           </button>
         </div>
       </section>
@@ -106,9 +174,9 @@ const App: React.FC = () => {
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
             {[
-              { title: "Asli Lokal", desc: "100% Produk asli buatan masyarakat Solok Selatan." },
-              { title: "Kualitas Premium", desc: "Dikurasi secara ketat untuk menjamin kepuasan pelanggan." },
-              { title: "Dukung Ekonomi", desc: "Setiap pembelian membantu perekonomian warga lokal." }
+              { title: t.features.f1_title, desc: t.features.f1_desc },
+              { title: t.features.f2_title, desc: t.features.f2_desc },
+              { title: t.features.f3_title, desc: t.features.f3_desc }
             ].map((feature, i) => (
               <div key={i} className="p-6">
                 <div className="w-16 h-16 bg-solok-gold/10 rounded-full flex items-center justify-center mx-auto mb-6 text-solok-gold text-2xl font-bold font-serif">
@@ -127,14 +195,12 @@ const App: React.FC = () => {
         <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/batik-pattern.png')]"></div>
         <div className="container mx-auto px-6 relative z-10 flex flex-col md:flex-row items-center gap-12">
           <div className="md:w-1/2">
-            <h2 className="text-4xl font-serif font-bold mb-6">Tentang UMKM Solok Selatan</h2>
+            <h2 className="text-4xl font-serif font-bold mb-6">{t.about.title}</h2>
             <p className="text-red-100 mb-6 leading-relaxed">
-              Platform ini didedikasikan untuk mengangkat potensi luar biasa dari Solok Selatan, "Nagari Saribu Rumah Gadang". 
-              Kami menghubungkan pengrajin, petani, dan kreator lokal langsung ke pasar global melalui teknologi.
+              {t.about.p1}
             </p>
             <p className="text-red-100 leading-relaxed">
-              Dengan sentuhan teknologi AI modern, kami membantu para pelaku usaha untuk meningkatkan branding 
-              dan menjangkau lebih banyak pelanggan tanpa meninggalkan identitas budaya mereka.
+              {t.about.p2}
             </p>
           </div>
           <div className="md:w-1/2 grid grid-cols-2 gap-4">
@@ -151,20 +217,20 @@ const App: React.FC = () => {
             <div>
               <h3 className="text-2xl font-serif font-bold mb-6 text-solok-gold">UMKM Solsel</h3>
               <p className="text-gray-400 text-sm leading-relaxed">
-                Pusat oleh-oleh dan kerajinan terbaik dari Solok Selatan. Terpercaya, Amanah, dan Berkualitas.
+                {t.footer.desc}
               </p>
             </div>
             <div>
-              <h4 className="font-bold mb-4">Tautan</h4>
+              <h4 className="font-bold mb-4">{t.footer.links}</h4>
               <ul className="space-y-2 text-gray-400 text-sm">
-                <li><a href="#" className="hover:text-white">Beranda</a></li>
-                <li><a href="#" className="hover:text-white">Produk</a></li>
-                <li><a href="#" className="hover:text-white">Tentang Kami</a></li>
-                <li><a href="#" className="hover:text-white">Cara Belanja</a></li>
+                <li><a href="#beranda" className="hover:text-white">{t.navbar.home}</a></li>
+                <li><a href="#produk" className="hover:text-white">{t.navbar.products}</a></li>
+                <li><a href="#tentang" className="hover:text-white">{t.navbar.about}</a></li>
+                <li><a href="#kontak" className="hover:text-white">{t.navbar.contact}</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-bold mb-4">Kategori</h4>
+              <h4 className="font-bold mb-4">{t.footer.categories}</h4>
               <ul className="space-y-2 text-gray-400 text-sm">
                 <li><a href="#" className="hover:text-white">Kuliner</a></li>
                 <li><a href="#" className="hover:text-white">Fashion & Tekstil</a></li>
@@ -173,7 +239,7 @@ const App: React.FC = () => {
               </ul>
             </div>
             <div>
-              <h4 className="font-bold mb-4">Kontak Kami</h4>
+              <h4 className="font-bold mb-4">{t.footer.contact}</h4>
               <ul className="space-y-3 text-gray-400 text-sm">
                 <li className="flex items-start gap-3">
                   <MapPin size={18} className="mt-1 text-solok-gold" />
@@ -191,7 +257,7 @@ const App: React.FC = () => {
             </div>
           </div>
           <div className="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
-            &copy; {new Date().getFullYear()} UMKM Solok Selatan Digital. All rights reserved.
+            &copy; {new Date().getFullYear()} UMKM Solok Selatan Digital. {t.footer.rights}
           </div>
         </div>
       </footer>
