@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Product, GeminiStatus } from '../types';
 import { generateMarketingCopy } from '../services/geminiService';
-import { Wand2, Loader2, Heart, MessageCircle, BadgeCheck, ListFilter, Facebook, Instagram, Share2, Check, Briefcase, Leaf } from 'lucide-react';
+import { Wand2, Loader2, Heart, MessageCircle, BadgeCheck, ListFilter, Facebook, Instagram, Share2, Check, Briefcase, Leaf, Trees, Mountain } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 interface ProductCardProps {
@@ -77,10 +77,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetail 
              <span className="bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-gray-900 shadow-sm border border-gray-100">
                 {product.category}
              </span>
-             {/* Mbiz Ready Badge */}
-             {product.isMbizReady && (
-               <span className="bg-blue-600/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-white shadow-md flex items-center gap-1">
-                  <Briefcase size={12} /> {t.products.mbiz_badge}
+             {/* EUDR Badge */}
+             {product.eudrVerified && (
+               <span className="bg-green-600/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-white shadow-md flex items-center gap-1">
+                  <Trees size={12} /> {t.products.eudr_badge}
                </span>
              )}
         </div>
@@ -101,11 +101,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetail 
               <p className="text-white text-xs font-medium">{product.owner}</p>
            </div>
            
-           {/* Harvest Date for Agri products */}
-           {product.harvestDate && (
-             <div className="flex items-center gap-1.5 bg-green-600/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20">
-               <Leaf size={14} className="text-white" />
-               <p className="text-white text-xs font-medium">Panen: {product.harvestDate}</p>
+           {/* Elevation for Coffee */}
+           {product.elevation && (
+             <div className="flex items-center gap-1.5 bg-gray-700/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20">
+               <Mountain size={14} className="text-white" />
+               <p className="text-white text-xs font-medium">{product.elevation}</p>
              </div>
            )}
         </div>
@@ -135,11 +135,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenDetail 
           )}
         </p>
 
-        {/* Legalitas Info (Govt requirement) */}
+        {/* Legalitas Info */}
         {product.legalitas && product.legalitas.length > 0 && (
           <div className="mb-3 flex flex-wrap gap-1">
-             {product.legalitas.map((leg, i) => (
-               <span key={i} className="text-[10px] bg-gray-100 text-gray-600 px-2 py-0.5 rounded border border-gray-200">
+             {product.legalitas.slice(0, 3).map((leg, i) => (
+               <span key={i} className={`text-[10px] px-2 py-0.5 rounded border ${leg.includes('EUDR') ? 'bg-green-50 text-green-700 border-green-200 font-bold' : 'bg-gray-100 text-gray-600 border-gray-200'}`}>
                  {leg}
                </span>
              ))}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, MessageCircle, CheckCircle2, ShoppingBag, Briefcase, FileText } from 'lucide-react';
+import { X, MessageCircle, CheckCircle2, ShoppingBag, Briefcase, FileText, Trees, MapPin } from 'lucide-react';
 import { Product } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -27,13 +27,12 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
     const phoneNumber = product.contactNumber || "6288267051392";
     const message = `Yth. ${product.owner},
 
-Saya dari Dinas/Instansi [Sebutkan Nama Instansi] bermaksud meminta *Penawaran Resmi (Quotation)* untuk pengadaan:
+Saya bermaksud meminta *Penawaran Resmi (Quotation)* untuk pengadaan:
 
 Produk: ${product.name}
 Kebutuhan: [Sebutkan Jumlah]
-Tujuan: Pengadaan Barang/Jasa
 
-Mohon info ketersediaan stok dan kelengkapan administrasi (Mbizmarket/NIB/Faktur). Terima kasih.`;
+Mohon lampirkan sertifikat EUDR/Bebas Deforestasi dan data koordinat lahan. Terima kasih.`;
     
     window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
   };
@@ -53,9 +52,9 @@ Mohon info ketersediaan stok dan kelengkapan administrasi (Mbizmarket/NIB/Faktur
             <span className="bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-gray-900">
               {product.category}
             </span>
-            {product.isMbizReady && (
-              <span className="bg-blue-600/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-white">
-                Mbiz Ready
+            {product.eudrVerified && (
+              <span className="bg-green-600/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-white flex items-center gap-1">
+                <Trees size={12} /> {t.products.eudr_badge}
               </span>
             )}
           </div>
@@ -80,26 +79,50 @@ Mohon info ketersediaan stok dan kelengkapan administrasi (Mbizmarket/NIB/Faktur
             {product.description}
           </p>
 
-          {/* Legalitas Block for Govt */}
-          {product.legalitas && product.legalitas.length > 0 && (
-            <div className="mb-6 p-3 bg-blue-50 border border-blue-100 rounded-lg">
-              <h5 className="text-xs font-bold text-blue-800 uppercase tracking-wider mb-2 flex items-center gap-1">
-                <FileText size={12} /> Legalitas Usaha
+          {/* EUDR & Traceability Section */}
+          {product.eudrVerified && (
+            <div className="mb-6 p-4 bg-green-50 border border-green-100 rounded-xl">
+              <h5 className="text-xs font-bold text-green-800 uppercase tracking-wider mb-3 flex items-center gap-1">
+                <MapPin size={14} /> {t.products.traceability}
               </h5>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                   <span className="text-[10px] text-green-600 uppercase font-bold block mb-1">{t.products.coords}</span>
+                   <p className="text-sm font-mono text-green-900 bg-white/50 p-1 rounded border border-green-100 inline-block">
+                     {product.farmCoordinates}
+                   </p>
+                </div>
+                <div>
+                   <span className="text-[10px] text-green-600 uppercase font-bold block mb-1">{t.products.elevation}</span>
+                   <p className="text-sm font-medium text-green-900">
+                     {product.elevation}
+                   </p>
+                </div>
+              </div>
+              <p className="text-[10px] text-green-700 mt-2 italic">
+                *Produk ini telah lolos verifikasi polygon bebas deforestasi sesuai regulasi EUDR.
+              </p>
+            </div>
+          )}
+
+          {/* Legalitas Info */}
+          {product.legalitas && product.legalitas.length > 0 && (
+            <div className="mb-6">
+              <h5 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Legalitas & Sertifikasi</h5>
               <div className="flex flex-wrap gap-2">
                 {product.legalitas.map((l, i) => (
-                  <span key={i} className="text-xs text-blue-700 font-medium px-2 py-1 bg-white rounded border border-blue-200">{l}</span>
+                  <span key={i} className="text-xs text-gray-600 font-medium px-2 py-1 bg-gray-50 rounded border border-gray-200">{l}</span>
                 ))}
               </div>
             </div>
           )}
 
           <div className="mt-auto">
-            {/* B2B / Govt Action */}
-            {product.isMbizReady && (
+            {/* B2B / Export Action */}
+            {(product.eudrVerified || product.isMbizReady) && (
               <button 
                 onClick={handleB2BQuote}
-                className="w-full mb-6 bg-blue-900 hover:bg-blue-800 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-md transition-all"
+                className="w-full mb-6 bg-gray-900 hover:bg-gray-800 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-md transition-all"
               >
                 <Briefcase size={18} /> {t.products.buy_b2b}
               </button>

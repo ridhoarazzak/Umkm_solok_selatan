@@ -7,71 +7,126 @@ import { Toast, ToastType } from './components/Toast';
 import { RegisterModal } from './components/RegisterModal';
 import { ProductDetailModal } from './components/ProductDetailModal';
 import { Product, PlaceResult, GeminiStatus } from './types';
-import { MapPin, Phone, Instagram, Facebook, Search, Map, Loader2, ArrowUpRight, AlertCircle, PlusCircle, ChevronDown, WifiOff, Navigation, Layers, Filter, TrendingUp } from 'lucide-react';
+import { MapPin, Phone, Instagram, Facebook, Search, Map, Loader2, ArrowUpRight, AlertCircle, PlusCircle, ChevronDown, WifiOff, Navigation, Layers, Filter, TrendingUp, Trees } from 'lucide-react';
 import { useLanguage } from './contexts/LanguageContext';
 import { searchPlacesInSolok } from './services/geminiService';
 import ReactMarkdown from 'react-markdown';
 
-// --- DATA 10 UMKM SOLOK SELATAN (UPDATED FOR B2G & AGRI) ---
+// --- DATA 10 UMKM SOLOK SELATAN (FOCUSED ON COFFEE & EUDR) ---
 
 const PRODUCTS_ID: Product[] = [
-  // 1. KOPI (Padang Aro)
+  // 1. KOPI PREMIUM (Highlight)
   {
     id: 'umkm-1',
-    name: 'Kopi Arabika "Golden Solsel"',
-    category: 'Minuman',
-    price: 95000,
-    description: 'Biji kopi Arabika single origin dari dataran tinggi Padang Aro (1.400 mdpl). Dipetik merah sempurna.',
+    name: 'Arabika "Golden Solsel" (EUDR Verified)',
+    category: 'Kopi',
+    price: 110000,
+    description: 'Biji kopi Arabika Full Wash Grade 1. Terverifikasi bebas deforestasi (EUDR) dengan data poligon lengkap. Notes: Caramel, Chocolate, Spices.',
     image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&q=80&w=800',
-    owner: 'Kopi Alam Surambi',
+    owner: 'Koperasi Solok Radjo',
     contactNumber: '6281234567890',
-    instagram: 'kopisolsel_official',
+    instagram: 'solokradjo',
     variants: [
-      { name: 'Roasted Bean (250g)', price: 95000 },
-      { name: 'Green Bean (1kg)', price: 150000 }
+      { name: 'Roasted Bean (250g)', price: 110000 },
+      { name: 'Green Bean Export (1kg)', price: 165000 }
     ],
-    // MBiz & Agri Data
     isMbizReady: true,
-    legalitas: ['NIB: 12345', 'P-IRT', 'Halal'],
-    harvestDate: '15 Okt 2023'
+    legalitas: ['NIB', 'EUDR Compliant', 'Halal', 'SCA Score 84+'],
+    harvestDate: 'Okt 2023',
+    eudrVerified: true,
+    farmCoordinates: '-1.5654, 101.2588',
+    elevation: '1.400 - 1.600 MDPL'
   },
-  // 2. RENDANG (Muara Labuh)
+  // 2. KOPI ROBUSTA
+  {
+    id: 'umkm-6',
+    name: 'Robusta Fine "Liki" (EUDR Verified)',
+    category: 'Kopi',
+    price: 45000,
+    description: 'Robusta petik merah dari perkebunan Liki. Body tebal, rasa coklat hitam yang kuat. Cocok untuk kopi susu kekinian. Legalitas lahan aman.',
+    image: 'https://images.unsplash.com/photo-1559525839-b184a4d6c5af?auto=format&fit=crop&q=80&w=800',
+    owner: 'Mitra Teh Liki',
+    contactNumber: '628123123123',
+    instagram: 'kopiliki_official',
+    variants: [
+      { name: 'Bubuk Halus (250g)', price: 45000 },
+      { name: 'Green Bean (1kg)', price: 75000 }
+    ],
+    isMbizReady: true,
+    legalitas: ['NIB', 'EUDR Compliant'],
+    harvestDate: 'Daily',
+    eudrVerified: true,
+    farmCoordinates: '-1.5812, 101.3021',
+    elevation: '900 - 1.100 MDPL'
+  },
+  // 3. KOPI NATURAL
+  {
+    id: 'umkm-11',
+    name: 'Arabika Natural Process (Micro Lot)',
+    category: 'Kopi',
+    price: 135000,
+    description: 'Kopi proses Natural fermentasi 72 jam. Rasa buah tropis (Jackfruit, Banana) yang intens. Stok terbatas.',
+    image: 'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&q=80&w=800',
+    owner: 'Poktan Tani Maju',
+    contactNumber: '628111222333',
+    variants: [
+      { name: 'Roasted Bean (200g)', price: 135000 }
+    ],
+    isMbizReady: false,
+    legalitas: ['P-IRT'],
+    eudrVerified: false,
+    farmCoordinates: '-1.5500, 101.2400',
+    elevation: '1.500 MDPL'
+  },
+  // 4. RENDANG
   {
     id: 'umkm-2',
     name: 'Rendang Paru Kering "Uni Emi"',
     category: 'Makanan',
     price: 75000,
-    description: 'Rendang paru sapi yang dimasak kering (krispi). Tahan lama. Cocok untuk paket sembako dinas.',
+    description: 'Rendang paru sapi yang dimasak kering (krispi). Teman minum kopi yang pas.',
     image: 'https://images.unsplash.com/photo-1603083569762-b9e76100914c?auto=format&fit=crop&q=80&w=800',
     owner: 'Dapur Minang Asli',
     contactNumber: '6281122334455',
     instagram: 'dapurminang.uniemi',
     variants: [
-        { name: 'Paru Kering (250g)', price: 75000 },
-        { name: 'Rendang Daging (500g)', price: 160000 }
+        { name: 'Paru Kering (250g)', price: 75000 }
     ],
     isMbizReady: true,
     legalitas: ['NIB', 'P-IRT', 'Halal']
   },
-  // 3. SONGKET (Fashion Premium)
+  // 5. TEH
+  {
+    id: 'umkm-12',
+    name: 'Teh Putih Silver Needle (Premium)',
+    category: 'Minuman',
+    price: 150000,
+    description: 'Pucuk teh putih pilihan dari perkebunan teh Liki (terbesar di dunia dalam satu hamparan). Kaya antioksidan.',
+    image: 'https://images.unsplash.com/photo-1576092768241-dec231844f74?auto=format&fit=crop&q=80&w=800',
+    owner: 'Mitra Teh Liki',
+    contactNumber: '628123123123',
+    variants: [
+      { name: 'Tin Can (50g)', price: 150000 }
+    ],
+    isMbizReady: true
+  },
+  // 6. SONGKET
   {
     id: 'umkm-3',
     name: 'Songket ATBM Pucuk Rebung',
     category: 'Fashion',
     price: 2500000,
-    description: 'Kain tenun eksklusif motif Pucuk Rebung. Cocok untuk seragam dharma wanita atau souvenir tamu daerah.',
+    description: 'Kain tenun eksklusif motif Pucuk Rebung.',
     image: 'https://images.unsplash.com/photo-1544967082-d9d3f661eb10?auto=format&fit=crop&q=80&w=800',
     owner: 'Galeri Tenun Bundo',
     contactNumber: '6281987654321',
     variants: [
-      { name: 'Full Set', price: 2500000 },
-      { name: 'Selendang', price: 850000 }
+      { name: 'Full Set', price: 2500000 }
     ],
-    isMbizReady: true,
-    legalitas: ['NIB', 'IUMK']
+    isMbizReady: true
   },
-  // 4. CAMILAN
-  {
+   // 7. CAMILAN
+   {
     id: 'umkm-4',
     name: 'Keripik Sanjai Balado',
     category: 'Camilan',
@@ -86,114 +141,21 @@ const PRODUCTS_ID: Product[] = [
     ],
     isMbizReady: false
   },
-  // 5. KERAJINAN (Souvenir)
-  {
-    id: 'umkm-5',
-    name: 'Miniatur Rumah Gadang',
-    category: 'Kerajinan',
-    price: 450000,
-    description: 'Hiasan meja otentik berbentuk Rumah Gadang dari kayu Surian. Souvenir resmi Pemda.',
-    image: 'https://images.unsplash.com/photo-1505374830113-5853234d748f?auto=format&fit=crop&q=80&w=800',
-    owner: 'Solsel Craft Center',
-    contactNumber: '6289988776655',
-    variants: [
-      { name: 'Size S', price: 450000 },
-      { name: 'Size M', price: 850000 }
-    ],
-    isMbizReady: true,
-    legalitas: ['NIB']
-  },
-  // 6. TEH (Perkebunan)
-  {
-    id: 'umkm-6',
-    name: 'Teh Hitam Premium Grade A',
-    category: 'Minuman',
-    price: 50000,
-    description: 'Teh hitam orthodox yang diproses dari pucuk pecco pilihan.',
-    image: 'https://images.unsplash.com/photo-1576092768241-dec231844f74?auto=format&fit=crop&q=80&w=800',
-    owner: 'Mitra Teh Liki',
-    contactNumber: '628123123123',
-    variants: [
-      { name: 'Pouch (100g)', price: 50000 }
-    ],
-    isMbizReady: true,
-    legalitas: ['NIB', 'P-IRT', 'Halal', 'ISO'],
-    harvestDate: 'Daily'
-  },
-  // 7. BATIK
-  {
-    id: 'umkm-7',
-    name: 'Batik Tanah Liek',
-    category: 'Fashion',
-    price: 375000,
-    description: 'Batik tulis pewarnaan tanah liat. Tersedia kain untuk seragam kantor.',
-    image: 'https://images.unsplash.com/photo-1526417502920-5c68f44d1544?auto=format&fit=crop&q=80&w=800',
-    owner: 'Sanggar Batik Nagari',
-    contactNumber: '6287711223344',
-    variants: [
-      { name: 'Bahan Kain (2m)', price: 375000 }
-    ],
-    isMbizReady: true
-  },
-  // 8. KULINER
-  {
-    id: 'umkm-8',
-    name: 'Dendeng Batokok',
-    category: 'Makanan',
-    price: 90000,
-    description: 'Daging sapi pilihan dibakar dan dipukul.',
-    image: 'https://images.unsplash.com/photo-1574484284008-86d47dc648d3?auto=format&fit=crop&q=80&w=800',
-    owner: 'RM Salero Kampuang',
-    contactNumber: '6285566778811',
-    variants: [
-      { name: 'Frozen Pack (250g)', price: 90000 }
-    ],
-    isMbizReady: false
-  },
-  // 9. MAKANAN MANIS
-  {
-    id: 'umkm-9',
-    name: 'Galamai Gula Aren',
-    category: 'Camilan',
-    price: 40000,
-    description: 'Dodol tradisional Galamai.',
-    image: 'https://images.unsplash.com/photo-1606312619070-d48b4c652a52?auto=format&fit=crop&q=80&w=800',
-    owner: 'Galamai Uni Des',
-    contactNumber: '628555444333',
-    variants: [
-      { name: 'Original', price: 40000 }
-    ],
-    isMbizReady: false
-  },
-  // 10. CRAFT
-  {
-    id: 'umkm-10',
-    name: 'Tas Anyaman Pandan',
-    category: 'Kerajinan',
-    price: 125000,
-    description: 'Tas anyaman daun pandan kombinasi kulit.',
-    image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=800',
-    owner: 'Kreatif Mandiri',
-    contactNumber: '628777888999',
-    variants: [
-      { name: 'Tote Bag', price: 125000 }
-    ],
-    isMbizReady: false
-  }
 ];
 
 const PRODUCTS_EN = PRODUCTS_ID.map(p => ({
     ...p,
-    name: p.name + (p.category === 'Fashion' ? ' (Export)' : ''),
+    name: p.name.replace('Kopi', 'Coffee').replace('Arabika', 'Arabica'),
     description: p.description + " (Authentic South Solok)."
 }));
 
-// --- MARKET PRICE DATA (Mockup for Agri-tech feel) ---
+// --- MARKET PRICE TICKER (FOCUSED ON EUDR PRICE GAP) ---
 const MARKET_PRICES = [
-  { name: 'Kopi Arabika (Gabah)', price: 'Rp 35.000/kg', trend: 'up' },
-  { name: 'Kulit Manis (Kering)', price: 'Rp 65.000/kg', trend: 'down' },
-  { name: 'Cabe Merah', price: 'Rp 45.000/kg', trend: 'stable' },
-  { name: 'Pinang', price: 'Rp 8.000/kg', trend: 'down' }
+  { name: 'Arabika Green Bean (EUDR)', price: 'Rp 125.000/kg', trend: 'up' },
+  { name: 'Arabika Asalan (Non-EUDR)', price: 'Rp 85.000/kg', trend: 'down' },
+  { name: 'Robusta Fine (EUDR)', price: 'Rp 65.000/kg', trend: 'up' },
+  { name: 'Robusta Asalan', price: 'Rp 40.000/kg', trend: 'stable' },
+  { name: 'Kulit Manis/Cassia', price: 'Rp 65.000/kg', trend: 'down' }
 ];
 
 // --- MAIN APP COMPONENT ---
@@ -208,15 +170,13 @@ const App: React.FC = () => {
     setSelectedCategory(t.products.filter_all);
   }, [language, t.products.filter_all]);
   
-  // Use translated "All" and "Mbiz Ready" as options
-  const MBIZ_FILTER_KEY = t.products.mbiz_badge; // "Siap Mbizmarket"
-  const categories = [t.products.filter_all, MBIZ_FILTER_KEY, ...Array.from(new Set(rawProducts.map(p => p.category)))];
+  const EUDR_FILTER_KEY = t.products.eudr_badge; 
+  const categories = [t.products.filter_all, EUDR_FILTER_KEY, 'Kopi', ...Array.from(new Set(rawProducts.map(p => p.category))).filter(c => c !== 'Kopi')];
 
-  // Filter Logic Updated
   const filteredProducts = selectedCategory === t.products.filter_all
     ? rawProducts 
-    : selectedCategory === MBIZ_FILTER_KEY
-        ? rawProducts.filter(p => p.isMbizReady) // Special filter for B2G
+    : selectedCategory === EUDR_FILTER_KEY
+        ? rawProducts.filter(p => p.eudrVerified) 
         : rawProducts.filter(p => p.category === selectedCategory);
 
   const [visibleCount, setVisibleCount] = useState(6);
@@ -264,7 +224,7 @@ const App: React.FC = () => {
     <div className="min-h-screen bg-slate-50 font-sans text-gray-900">
       <Navbar />
       
-      {/* MARKET PRICE TICKER (New Feature: Agri-tech feel) */}
+      {/* MARKET PRICE TICKER (Highlighting EUDR Premium) */}
       <div className="bg-gray-900 text-gray-300 text-xs py-2 overflow-hidden border-b border-gray-800 pt-20">
         <div className="container mx-auto px-6 flex items-center gap-4">
            <span className="font-bold text-solok-gold whitespace-nowrap hidden md:inline">{t.market.title}</span>
@@ -273,8 +233,8 @@ const App: React.FC = () => {
                <div key={i} className="flex items-center gap-2">
                  <span className="font-medium text-white">{mp.name}</span>
                  <span className="text-gray-400">{mp.price}</span>
-                 {mp.trend === 'up' && <span className="text-green-500">▲</span>}
-                 {mp.trend === 'down' && <span className="text-red-500">▼</span>}
+                 {mp.trend === 'up' && <span className="text-green-500 font-bold">▲ (Naik)</span>}
+                 {mp.trend === 'down' && <span className="text-red-500">▼ (Turun)</span>}
                  {mp.trend === 'stable' && <span className="text-yellow-500">-</span>}
                </div>
              ))}
@@ -326,11 +286,11 @@ const App: React.FC = () => {
               onClick={() => handleCategoryChange(cat)}
               className={`px-5 py-2 rounded-full text-sm font-bold transition-all flex items-center gap-2 ${
                 selectedCategory === cat 
-                  ? (cat === MBIZ_FILTER_KEY ? 'bg-blue-900 text-white shadow-lg' : 'bg-gray-900 text-white shadow-lg transform scale-105')
+                  ? (cat === EUDR_FILTER_KEY ? 'bg-green-700 text-white shadow-lg' : 'bg-gray-900 text-white shadow-lg transform scale-105')
                   : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-100'
               }`}
             >
-              {cat === MBIZ_FILTER_KEY && <TrendingUp size={16} />} 
+              {cat === EUDR_FILTER_KEY && <Trees size={16} />} 
               {cat}
             </button>
           ))}

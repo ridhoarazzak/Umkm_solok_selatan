@@ -38,6 +38,10 @@ interface Translations {
     share_success: string;
     mbiz_badge: string;
     min_order: string;
+    eudr_badge: string;
+    traceability: string;
+    coords: string;
+    elevation: string;
   };
   explore: {
     title: string;
@@ -89,165 +93,173 @@ const translations: Record<Language, Translations> = {
   id: {
     navbar: {
       home: 'Beranda',
-      products: 'Produk',
+      products: 'Katalog',
       about: 'Tentang',
       contact: 'Kontak',
-      partner: 'Mitra UMKM',
-      partner_desc: 'Daftar Mitra UMKM',
-      explore: 'Jelajah'
+      partner: 'Mitra Tani',
+      partner_desc: 'Daftar Petani Kopi',
+      explore: 'Peta Kebun'
     },
     market: {
-      title: 'Harga Komoditas Solsel Hari Ini:',
-      update: 'Diperbarui: Pagi Ini'
+      title: 'Harga Kopi & Komoditas (EUDR vs Lokal):',
+      update: 'Update: Pagi Ini'
     },
     hero: {
-      tag: 'Karya Anak Nagari',
-      title: 'Keindahan Solok Selatan Dalam Genggaman',
-      subtitle: 'Platform UMKM digital yang mendukung Pengadaan Pemerintah (B2G) dan pemberdayaan Petani lokal.',
-      cta_buy: 'Belanja Sekarang',
-      cta_learn: 'Info Harga Pasar'
+      tag: 'Kopi Solok Selatan Mendunia',
+      title: 'Kopi Spesialti Berstandar EUDR Eropa',
+      subtitle: 'Platform digital pertama di Sumbar yang menghubungkan Petani Kopi Solok Selatan dengan pasar Global melalui sistem Traceability & Kepatuhan EUDR.',
+      cta_buy: 'Beli Green Bean',
+      cta_learn: 'Cek Data EUDR'
     },
     products: {
-      title: 'Produk Unggulan',
-      subtitle: 'Temukan produk lokal berkualitas. Filter khusus untuk vendor yang siap Mbizmarket/e-Katalog bagi kebutuhan Dinas.',
-      view_all: 'Lihat Semua Produk',
+      title: 'Katalog Kopi & UMKM',
+      subtitle: 'Koleksi Kopi Arabika & Robusta terbaik yang terverifikasi Bebas Deforestasi (EUDR Ready), serta produk unggulan lainnya.',
+      view_all: 'Lihat Semua',
       filter_all: 'Semua',
-      sold_by: 'Dijual oleh',
-      buy_wa: 'Beli via WA',
-      buy_b2b: 'Minta Penawaran (Dinas)',
-      ai_marketing: 'Copy Marketing AI',
-      ai_button_title: 'Buat deskripsi menarik dengan AI',
-      visit_profile: 'Kunjungi Profil',
+      sold_by: 'Petani/Prosesor',
+      buy_wa: 'Beli Sample',
+      buy_b2b: 'Kontrak Ekspor/Dinas',
+      ai_marketing: 'Smart Copy',
+      ai_button_title: 'Buat deskripsi',
+      visit_profile: 'Profil Kebun',
       share_product: 'Bagikan',
-      share_success: 'Link produk disalin!',
+      share_success: 'Link disalin!',
       mbiz_badge: 'Siap Mbizmarket',
-      min_order: 'Min. Order'
+      min_order: 'Min. Order',
+      eudr_badge: 'EUDR Verified',
+      traceability: 'Data Keterlacakan',
+      coords: 'Koordinat Lahan',
+      elevation: 'Ketinggian Tanam'
     },
     explore: {
-      title: 'Jelajah Solok Selatan',
-      subtitle: 'Cari rekomendasi tempat kuliner, wisata, dan UMKM langsung dari Google Maps.',
-      cat_culinary: 'Kuliner',
-      cat_tourism: 'Wisata',
-      cat_craft: 'Kerajinan',
-      cat_hotel: 'Penginapan',
-      search_placeholder: 'Cari "Sate Kambing enak"...',
+      title: 'Peta Jelajah Kopi',
+      subtitle: 'Temukan lokasi kebun kopi, kedai kopi, dan destinasi wisata di Solok Selatan.',
+      cat_culinary: 'Kedai Kopi',
+      cat_tourism: 'Kebun Kopi',
+      cat_craft: 'Pengolahan',
+      cat_hotel: 'Homestay',
+      search_placeholder: 'Cari "Kebun Kopi Liki"...',
       search_btn: 'Cari Lokasi',
-      result_title: 'Rekomendasi AI & Google Maps:',
-      source_map: 'Buka di Maps'
+      result_title: 'Hasil Analisa Lokasi:',
+      source_map: 'Buka Peta'
     },
     features: {
-      f1_title: 'Siap e-Katalog',
-      f1_desc: 'Vendor terverifikasi dengan NIB & NPWP untuk pengadaan pemerintah.',
-      f2_title: 'Langsung Petani',
-      f2_desc: 'Memangkas rantai pasok, harga terbaik langsung dari petani.',
-      f3_title: 'Dukung Ekonomi',
-      f3_desc: 'Setiap pembelian membantu perekonomian warga lokal.'
+      f1_title: 'EUDR Compliant',
+      f1_desc: 'Kopi terverifikasi bebas deforestasi dengan data koordinat poligon.',
+      f2_title: 'Fair Trade',
+      f2_desc: 'Harga transparan sesuai kualitas. Premium price untuk kopi lolos uji.',
+      f3_title: 'Direct Trade',
+      f3_desc: 'Transaksi langsung antara petani/koperasi dengan buyer/eksportir.'
     },
     social: {
-      title: 'Cerita UMKM Kita',
-      subtitle: 'Intip keseruan dan aktivitas terbaru para pelaku UMKM Solok Selatan di media sosial.',
-      follow_btn: 'Ikuti di Instagram'
+      title: 'Jejak Petani Kopi',
+      subtitle: 'Aktivitas panen dan pengolahan pasca panen petani Solok Selatan.',
+      follow_btn: 'Ikuti Instagram'
     },
     about: {
-      title: 'Tentang UMKM Solok Selatan',
-      p1: 'Platform ini didedikasikan untuk mengangkat potensi luar biasa dari Solok Selatan. Kami memfasilitasi UMKM untuk masuk ke ekosistem digital, termasuk kesiapan masuk ke pasar Pemerintah (Mbizmarket).',
-      p2: 'Dengan fitur informasi harga pasar, kami juga membantu petani mendapatkan transparansi harga yang adil.'
+      title: 'Revolusi Kopi Solsel',
+      p1: 'Kami memfasilitasi petani kopi Solok Selatan untuk memenuhi standar ekspor Eropa (EUDR). Dengan mendata koordinat lahan, kami memastikan kopi yang Anda beli 100% legal dan ramah lingkungan.',
+      p2: 'Selain kopi, kami juga memberdayakan UMKM pendukung ekosistem wisata dan ekonomi kreatif.'
     },
     footer: {
-      desc: 'Pusat oleh-oleh dan kerajinan terbaik dari Solok Selatan. Terpercaya, Amanah, dan Berkualitas.',
-      links: 'Tautan',
+      desc: 'Platform Agroteknologi & UMKM Solok Selatan. Fokus pada Kopi Berkelanjutan.',
+      links: 'Menu',
       categories: 'Kategori',
-      contact: 'Kontak Kami',
+      contact: 'Hubungi Koperasi',
       rights: 'All rights reserved.'
     },
     assistant: {
-      btn_label: 'Tanya Asisten Bisnis',
-      greeting: 'Halo! Saya asisten digital UMKM Solok Selatan. Ada yang bisa saya bantu terkait syarat Mbizmarket atau strategi harga?',
-      placeholder: 'Tanya syarat NIB, cara masuk e-katalog...',
-      thinking: 'Sedang berpikir...',
-      header_title: 'Asisten UMKM Digital'
+      btn_label: 'Tanya Ahli Kopi',
+      greeting: 'Halo! Saya asisten agronomi digital. Mau tanya soal syarat EUDR, harga kopi hari ini, atau teknik pasca panen?',
+      placeholder: 'Tanya tentang EUDR, grading kopi...',
+      thinking: 'Menganalisa data...',
+      header_title: 'Asisten Agronomi AI'
     }
   },
   en: {
     navbar: {
       home: 'Home',
-      products: 'Products',
+      products: 'Catalog',
       about: 'About',
       contact: 'Contact',
-      partner: 'Join as Partner',
-      partner_desc: 'Register as Partner',
-      explore: 'Explore'
+      partner: 'Farmer Partner',
+      partner_desc: 'Register Farmer',
+      explore: 'Farm Map'
     },
     market: {
-      title: 'Solsel Commodity Prices Today:',
+      title: 'Coffee Market Prices (EUDR vs Local):',
       update: 'Updated: This Morning'
     },
     hero: {
-      tag: 'Creation of Local Artisans',
-      title: 'The Beauty of South Solok in Your Hands',
-      subtitle: 'Digital MSME platform supporting Government Procurement (B2G) and local Farmer empowerment.',
-      cta_buy: 'Shop Now',
-      cta_learn: 'Market Price Info'
+      tag: 'World Class Solok Coffee',
+      title: 'EUDR Compliant Specialty Coffee',
+      subtitle: 'The first digital platform connecting South Solok Coffee Farmers to the Global market through Traceability systems & EUDR Compliance.',
+      cta_buy: 'Buy Green Bean',
+      cta_learn: 'Check EUDR Data'
     },
     products: {
-      title: 'Featured Products',
-      subtitle: 'Discover high-quality local products. Special filter for vendors ready for Mbizmarket/e-Catalog for Govt needs.',
-      view_all: 'View All Products',
+      title: 'Coffee & MSME Catalog',
+      subtitle: 'Collection of best Arabica & Robusta Coffee verified Deforestation-Free (EUDR Ready), and other premium products.',
+      view_all: 'View All',
       filter_all: 'All',
-      sold_by: 'Sold by',
-      buy_wa: 'Buy via WA',
-      buy_b2b: 'Request Quote (B2B)',
-      ai_marketing: 'AI Marketing Copy',
-      ai_button_title: 'Generate description with AI',
-      visit_profile: 'Visit Profile',
+      sold_by: 'Farmer/Processor',
+      buy_wa: 'Buy Sample',
+      buy_b2b: 'Export Contract',
+      ai_marketing: 'Smart Copy',
+      ai_button_title: 'Generate description',
+      visit_profile: 'Farm Profile',
       share_product: 'Share',
       share_success: 'Link copied!',
       mbiz_badge: 'Mbizmarket Ready',
-      min_order: 'Min. Order'
+      min_order: 'Min. Order',
+      eudr_badge: 'EUDR Verified',
+      traceability: 'Traceability Data',
+      coords: 'Farm Coordinates',
+      elevation: 'Elevation'
     },
     explore: {
-      title: 'Explore South Solok',
-      subtitle: 'Find recommendations for culinary, tourism, and MSMEs directly from Google Maps.',
-      cat_culinary: 'Culinary',
-      cat_tourism: 'Tourism',
-      cat_craft: 'Crafts',
-      cat_hotel: 'Hotels',
-      search_placeholder: 'Search "Best Satay"...',
+      title: 'Coffee Exploration Map',
+      subtitle: 'Find coffee farms, coffee shops, and tourism destinations in South Solok.',
+      cat_culinary: 'Coffee Shop',
+      cat_tourism: 'Coffee Farm',
+      cat_craft: 'Processing',
+      cat_hotel: 'Homestay',
+      search_placeholder: 'Search "Liki Coffee Farm"...',
       search_btn: 'Search Location',
-      result_title: 'AI & Google Maps Recommendations:',
-      source_map: 'Open in Maps'
+      result_title: 'Location Analysis:',
+      source_map: 'Open Map'
     },
     features: {
-      f1_title: 'e-Catalog Ready',
-      f1_desc: 'Verified vendors with NIB & Tax ID for government procurement.',
-      f2_title: 'Direct from Farmers',
-      f2_desc: 'Cutting the supply chain, best prices directly from farmers.',
-      f3_title: 'Support Economy',
-      f3_desc: 'Every purchase helps the local economy.'
+      f1_title: 'EUDR Compliant',
+      f1_desc: 'Coffee verified deforestation-free with polygon coordinate data.',
+      f2_title: 'Fair Trade',
+      f2_desc: 'Transparent pricing. Premium price for verified coffee.',
+      f3_title: 'Direct Trade',
+      f3_desc: 'Direct transactions between farmers/coops and buyers/exporters.'
     },
     social: {
-      title: 'Our MSME Stories',
-      subtitle: 'Peek into the excitement and latest activities of South Solok MSMEs on social media.',
-      follow_btn: 'Follow on Instagram'
+      title: 'Coffee Farmer Stories',
+      subtitle: 'Harvest and post-harvest activities of South Solok farmers.',
+      follow_btn: 'Follow Instagram'
     },
     about: {
-      title: 'About South Solok MSMEs',
-      p1: 'This platform is dedicated to uplifting the extraordinary potential of South Solok. We facilitate MSMEs to enter the digital ecosystem, including readiness for the Government market (Mbizmarket).',
-      p2: 'With market price information features, we also help farmers get fair price transparency.'
+      title: 'Solsel Coffee Revolution',
+      p1: 'We facilitate South Solok coffee farmers to meet European export standards (EUDR). By mapping land coordinates, we ensure the coffee you buy is 100% legal and eco-friendly.',
+      p2: 'Beyond coffee, we also empower MSMEs supporting the tourism and creative economy ecosystem.'
     },
     footer: {
-      desc: 'The center for the best souvenirs and crafts from South Solok. Trusted, Reliable, and Quality.',
-      links: 'Quick Links',
+      desc: 'South Solok Agrotech & MSME Platform. Focused on Sustainable Coffee.',
+      links: 'Menu',
       categories: 'Categories',
-      contact: 'Contact Us',
+      contact: 'Contact Coop',
       rights: 'All rights reserved.'
     },
     assistant: {
-      btn_label: 'Ask Business Assistant',
-      greeting: 'Hello! I am the South Solok MSME digital assistant. Can I help with Mbizmarket requirements or pricing strategy?',
-      placeholder: 'Ask about NIB requirements, e-catalog...',
-      thinking: 'Thinking...',
-      header_title: 'Digital MSME Assistant'
+      btn_label: 'Ask Coffee Expert',
+      greeting: 'Hello! I am your digital agronomy assistant. Ask me about EUDR requirements, today\'s coffee prices, or post-harvest tech?',
+      placeholder: 'Ask about EUDR, coffee grading...',
+      thinking: 'Analyzing data...',
+      header_title: 'AI Agronomy Assistant'
     }
   }
 };

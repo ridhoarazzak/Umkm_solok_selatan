@@ -15,11 +15,15 @@ export interface Product {
   instagram?: string; 
   facebook?: string;  
   variants?: Variant[];
-  // New Fields for Govt & Agri focus
-  isMbizReady?: boolean; // Vendor siap masuk e-Katalog/Mbiz
-  legalitas?: string[];  // NIB, PIRT, Halal
-  harvestDate?: string;  // Untuk produk pertanian (Freshness)
-  minOrder?: number;     // Minimum order untuk harga grosir
+  // Govt & Business Fields
+  isMbizReady?: boolean; 
+  legalitas?: string[];  
+  minOrder?: number;     
+  // Agri & EUDR Specific Fields
+  harvestDate?: string;
+  eudrVerified?: boolean; // Status Bebas Deforestasi (EUDR)
+  farmCoordinates?: string; // Titik Koordinat Kebun (Traceability)
+  elevation?: string; // MDPL (Penting untuk Kopi)
 }
 
 export interface BusinessTip {
