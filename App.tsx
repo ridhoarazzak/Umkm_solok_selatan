@@ -6,7 +6,7 @@ import { BusinessAssistant } from './components/BusinessAssistant';
 import { Toast, ToastType } from './components/Toast';
 import { RegisterModal } from './components/RegisterModal';
 import { Product, PlaceResult, GeminiStatus } from './types';
-import { MapPin, Phone, Instagram, Facebook, Search, Map, Loader2, ArrowUpRight, AlertCircle, PlusCircle, ChevronDown, WifiOff } from 'lucide-react';
+import { MapPin, Phone, Instagram, Facebook, Search, Map, Loader2, ArrowUpRight, AlertCircle, PlusCircle, ChevronDown, WifiOff, Navigation } from 'lucide-react';
 import { useLanguage } from './contexts/LanguageContext';
 import { searchPlacesInSolok } from './services/geminiService';
 import ReactMarkdown from 'react-markdown';
@@ -358,24 +358,40 @@ const App: React.FC = () => {
                   <ReactMarkdown>{searchResult.text}</ReactMarkdown>
                 </div>
 
-                {/* Grounding Source Links */}
+                {/* Grounding Source Links (Kartu Lokasi Elegan) */}
                 {searchResult.sourceLinks.length > 0 && (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-                    {searchResult.sourceLinks.map((link, idx) => (
-                      <a 
-                        key={idx} 
-                        href={link.uri} 
-                        target="_blank" 
-                        rel="noreferrer"
-                        className="flex items-center justify-between p-3 bg-gray-50 hover:bg-blue-50 border border-gray-200 hover:border-blue-200 rounded-lg transition-all group"
-                      >
-                        <div className="flex items-center gap-2 overflow-hidden">
-                          <MapPin size={16} className="text-solok-red flex-shrink-0" />
-                          <span className="text-sm font-medium truncate">{link.title}</span>
-                        </div>
-                        <ArrowUpRight size={14} className="text-gray-400 group-hover:text-blue-500" />
-                      </a>
-                    ))}
+                  <div>
+                    <h4 className="font-bold text-gray-700 mb-4 flex items-center gap-2">
+                      <Navigation size={18} className="text-solok-red" />
+                      Lokasi Terkait:
+                    </h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {searchResult.sourceLinks.map((link, idx) => (
+                        <a 
+                          key={idx} 
+                          href={link.uri} 
+                          target="_blank" 
+                          rel="noreferrer"
+                          className="flex flex-col p-4 bg-white border border-gray-200 rounded-xl hover:shadow-md hover:border-solok-gold transition-all group relative overflow-hidden"
+                        >
+                          <div className="absolute top-0 right-0 w-16 h-16 bg-solok-gold/10 rounded-bl-full -mr-8 -mt-8 transition-all group-hover:bg-solok-gold/20"></div>
+                          
+                          <div className="flex items-start justify-between mb-2 relative z-10">
+                            <div className="bg-blue-50 text-blue-600 p-2 rounded-lg">
+                              <MapPin size={20} />
+                            </div>
+                            <ArrowUpRight size={18} className="text-gray-400 group-hover:text-solok-gold group-hover:translate-x-1 transition-all" />
+                          </div>
+                          
+                          <span className="font-bold text-gray-900 group-hover:text-solok-gold transition-colors line-clamp-1 relative z-10">
+                            {link.title}
+                          </span>
+                          <span className="text-xs text-gray-500 mt-1 relative z-10">
+                            Klik untuk buka di Google Maps
+                          </span>
+                        </a>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
