@@ -207,16 +207,18 @@ const App: React.FC = () => {
     
     setSearchStatus(GeminiStatus.LOADING);
     setSearchResult(null);
-    showToast('Sedang mencari lokasi di Google Maps...', 'info'); // Feedback Instant
+    showToast('Sedang mencari lokasi di Google Maps...', 'info');
 
     try {
       const result = await searchPlacesInSolok(query);
       setSearchResult(result);
       setSearchStatus(GeminiStatus.SUCCESS);
       showToast('Lokasi berhasil ditemukan!', 'success');
-    } catch (e) {
+    } catch (e: any) {
       setSearchStatus(GeminiStatus.ERROR);
-      showToast('Gagal memuat data lokasi. Coba lagi.', 'error');
+      // Show actual error message if available, otherwise generic
+      const errMsg = e?.message || 'Gagal memuat data lokasi. Coba lagi.';
+      showToast(errMsg, 'error');
     }
   };
 
@@ -338,7 +340,9 @@ const App: React.FC = () => {
                   <AlertCircle size={20} />
                   <span className="font-bold">Gagal memuat data</span>
                 </div>
-                <p className="text-sm text-red-300">Terjadi kesalahan saat menghubungi Google Maps. Silakan coba lagi nanti.</p>
+                <p className="text-sm text-red-300">
+                   Jaringan sibuk atau API Key tidak memiliki akses ke Maps. Sistem menggunakan mode cadangan jika memungkinkan.
+                </p>
               </div>
             )}
 

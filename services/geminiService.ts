@@ -60,43 +60,68 @@ export const searchPlacesInSolok = async (categoryOrQuery: string): Promise<Plac
     throw new Error("API Key required");
   }
 
+  const primaryModel = 'gemini-2.5-flash';
+  const fallbackModel = 'gemini-3-flash-preview';
+
   try {
-    // We must use gemini-2.5-flash for Maps Grounding
-    const model = 'gemini-2.5-flash';
-    
+    // Attempt 1: Try with Google Maps Grounding + Search + Location Context
+    // Coordinates for Solok Selatan (approx. Padang Aro)
+    const solokContext = {
+      latitude: -1.565,
+      longitude: 101.258
+    };
+
     const response = await ai.models.generateContent({
-      model: model,
-      contents: `Carikan rekomendasi tempat ${categoryOrQuery} terbaik di Kabupaten Solok Selatan, Sumatera Barat. 
-      Berikan deskripsi singkat kenapa tempat itu menarik.`,
+      model: primaryModel,
+      contents: `Carikan daftar 5 rekomendasi tempat ${categoryOrQuery} terbaik dan populer di Kabupaten Solok Selatan, Sumatera Barat. 
+      Berikan deskripsi menarik tentang tempat tersebut.`,
       config: {
-        tools: [{ googleMaps: {} }],
+        tools: [{ googleMaps: {} }, { googleSearch: {} }],
+        toolConfig: {
+          retrievalConfig: {
+            latLng: solokContext
+          }
+        },
       },
     });
 
     // Extract grounding chunks for Maps URLs
     const chunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
     
-    // Robustly extract links from various potential chunk types (web or maps)
     const sourceLinks = chunks
       .map((chunk: any) => {
         if (chunk.web) {
-          return { title: chunk.web.title || "Link Web", uri: chunk.web.uri };
+          return { title: chunk.web.title || "Link Info", uri: chunk.web.uri };
         }
         if (chunk.maps) {
-           // Maps chunks often contain the direct Google Maps URI
-           return { title: chunk.maps.title || "Lihat di Google Maps", uri: chunk.maps.sourceUri || chunk.maps.uri };
+           return { title: chunk.maps.title || "Lokasi Google Maps", uri: chunk.maps.sourceUri || chunk.maps.uri };
         }
         return null;
       })
       .filter((link: any) => link !== null && link.uri);
 
     return {
-      text: response.text || "Tidak ditemukan data.",
+      text: response.text || "Tidak ditemukan data spesifik.",
       sourceLinks: sourceLinks
     };
 
   } catch (error) {
-    console.error("Gemini Maps Error:", error);
-    throw new Error("Gagal mencari lokasi. Pastikan API Key valid.");
+    console.warn("Maps grounding failed, attempting fallback to text generation...", error);
+    
+    // Attempt 2: Fallback to standard text generation if Maps fails (e.g. API limits)
+    try {
+        const fallbackResponse = await ai.models.generateContent({
+            model: fallbackModel,
+            contents: `Berikan rekomendasi 5 tempat ${categoryOrQuery} populer di Solok Selatan, Sumatera Barat. Berikan deskripsi singkat. Format sebagai daftar yang rapi.`,
+        });
+        
+        return {
+            text: fallbackResponse.text || "Maaf, pencarian tidak memberikan hasil.",
+            sourceLinks: [] // Fallback has no guaranteed maps links
+        };
+    } catch (fallbackError) {
+        console.error("Fallback search failed:", fallbackError);
+        throw new Error("Gagal mencari informasi. Silakan coba beberapa saat lagi.");
+    }
   }
 };
